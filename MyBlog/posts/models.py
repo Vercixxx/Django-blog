@@ -6,8 +6,8 @@ class Post(models.Model):
     author = models.TextField(default = "User")
     title = models.TextField()
     content = models.TextField()
-    views = models.IntegerField()
-    comments = models.IntegerField()
+    views = models.IntegerField(default=0)
+    comments = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'Post'
