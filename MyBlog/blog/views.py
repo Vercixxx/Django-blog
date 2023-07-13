@@ -2,15 +2,16 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 # models
-from posts.models import Post
+from posts.models import Post 
+from comments.models import Comment 
 
-# Create your views here.
+
 
 def home_view(request):
     
     posts = Post.objects.all()
     
-    return render(request, 'blog/index.html', {'posts':posts})
+    return render(request, 'blog/index.html', {'posts':posts, 'Comments':Comment})
 
 
 def about_view(request):
