@@ -89,23 +89,6 @@
       .bd-mode-toggle {
         z-index: 1500;
       }
-      .form-container {
-        transition: opacity 2s ease, max-height 2s ease;
-        opacity: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition-delay: 0.2s;
-        }
-
-        .form-container.visible {
-        opacity: 1;
-        max-height: 1000px;
-        transition-delay: 0s;
-        }
-
-
-
-    
     </style>
 
     
@@ -208,46 +191,50 @@
 
 
 
-        <div class="container  p-4 p-md-5 mb-4 mt-4 rounded text-body-emphasis bg-body-secondary">
+        <div class="p-4 p-md-5 mb-4 mt-4 rounded text-body-emphasis bg-body-secondary ">
+          <!-- <h1 class="display-12 fst-italic ">Log in </h1> -->
+
+          <form>
             <div class="row justify-content-center">
-              <div class="row ">
-                <form id="formA" class="form-container visible  ">
-
-                  <h3>Login</h3>
-
-                  <label class="fs-2">Login</label>
-                  <input type="text" class="form-control" name="input_login" id="input_login" aria-describedby="helpId" placeholder="Login"  required>
-                  
-                  <label class="fs-2">Password</label>
-                  <input type="password" class="form-control" name="input_password" id="input_password" placeholder="********"  required>
+              <label class="fs-2">Login</label>
+              <input type="text" class="form-control mb-3" name="input_login" id="input_login" aria-describedby="helpId" placeholder="Login"  required>
     
-                  
-                  <button type="submit" class="btn btn-primary mt-5 w-50">Log in</button>
-                  <button type="button" class="btn btn-secondary mt-5 w-75" onclick="hideForm('formA')">Don't have an account? click me!</button>
-                
-                </form>
-        
-                <form id="formB" class="form-container">
 
-                  <h3>Register</h3>
+                  <label class="fs-2 collapse collapse-horizontal bg-body-secondary " style="width: 300px;"id="collapseWidthExample">Email</label>
+                  <input type="email" class="form-control collapse collapse-horizontal" name="input_email" id="collapseWidthExample" placeholder="example@example.com"  required>
 
-                  <label class="fs-2">Login</label>
-                  <input type="text" class="form-control" name="input_login" id="input_login" aria-describedby="helpId" placeholder="Login" required>
-                  
-                  <label class="fs-2">Email</label>
-                  <input type="email" class="form-control" name="input_email" id="input_email" placeholder="example@example.com"  required>
-                  
-                  <label class="fs-2">Password</label>
-                  <input type="password" class="form-control" name="input_password" id="input_password" placeholder="********"  required>
+
+
+              <label class="fs-2  mt-3">Password</label>
+              <input type="password" class="form-control" name="input_password" id="input_password" placeholder="********"  required>
     
-                  <button type="submit" class="btn btn-primary mt-5 w-50">Create account</button>
-                  <button type="button" class="btn btn-secondary mt-5 w-75" onclick="hideForm('formB')">Already have an account? Click me!</button>
-                
-                </form>
-        
-              </div>
+
+
+              <button type="submit" class="btn btn-primary mt-5 w-50">Log in</button>
+              
+              <button type="button" class="btn btn-outline-success mt-5 w-75" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">Don't have an account? click me!</button>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
-          </div>
+          </form>
+
+        </div>
 
 
         
@@ -267,45 +254,14 @@
 
 
 
-
-
-
-
-
 </main>
 
 <footer class="py-3 text-center text-body-secondary bg-body-tertiary fixed-bottom w-100">
-    <p>Changed by Krzysztof Sluzalek</p>
-    <p>Based on <a href="https://getbootstrap.com/" class="text-decoration-none text-secondary">Bootstrap</a> by <a href="https://twitter.com/mdo" class="text-decoration-none text-secondary">@mdo</a>.</p>
-  </footer>
-  
+  <p>Changed by Krzysztof Sluzalek</p>
+  <p>Based on <a href="https://getbootstrap.com/" class="text-decoration-none text-secondary">Bootstrap</a> by <a href="https://twitter.com/mdo" class="text-decoration-none text-secondary">@mdo</a>.</p>
+</footer>
 
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-<script>
-    function hideForm(formId) {
-      var form = document.getElementById(formId);
-      form.classList.remove('visible');
-      setTimeout(function() {
-        form.style.display = 'none';
-        showNextForm(form);
-      }, 300);
-    }
-  
-    function showNextForm(previousForm) {
-      var forms = document.getElementsByClassName('form-container');
-      var nextForm;
-      for (var i = 0; i < forms.length; i++) {
-        if (forms[i] !== previousForm) {
-          nextForm = forms[i];
-          break;
-        }
-      }
-      nextForm.style.display = 'block';
-      setTimeout(function() {
-        nextForm.classList.add('visible');
-      }, 10);
-    }
-  </script>
-  
+
     </body>
 </html>
