@@ -24,7 +24,5 @@ urlpatterns = [
     
     # my sites
     path('', views.home_view, name='home_view'),
-    path('login/', views.login_view, name='login_view'),
-    path('about/', views.about_view, name='about_view'),
     
 ]

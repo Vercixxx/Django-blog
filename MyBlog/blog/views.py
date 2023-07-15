@@ -16,10 +16,3 @@ def home_view(request):
     
     return render(request, 'blog/blog.html', {'posts':posts, 'Comments':Comment, 'timezone':timezone, 'datetime':datetime})
 
-
-def about_view(request):
-    return render(request, 'blog/about.html')
-
-
-def login_view(request):
-    return render(request, 'blog/login.html')
