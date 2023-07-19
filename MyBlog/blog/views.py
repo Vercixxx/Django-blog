@@ -43,6 +43,7 @@ def home_view(request):
     return render(request, 'blog/blog.html', data)
 
 
+def register_view(request):
+    
 
-
-
+    return render(request, 'user_form/register.html')

@@ -24,5 +24,6 @@ urlpatterns = [
     
     # my sites
     path('', views.home_view, name='home_view'),
+    path('register/', views.register_view, name='register_view'),
     
 ]
