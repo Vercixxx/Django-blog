@@ -185,6 +185,21 @@
 <!-- Daily sentense -->
 <main class="container">
   
+        
+  {% if messages %}
+  {% for message in messages %}
+
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show " role="alert">
+    <strong>Register system</strong> 
+    <div>
+                {{ message }}
+    </div>
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+  {% endif %}
+
           <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary" style="background-image: url('{% static "images/mountains.jpg" %}'); background-size: cover; background-position: center;">
     
         <h1 class="display-4 fst-italic">― Madonna</h1>
@@ -197,20 +212,7 @@
 
         <!-- <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue reading...</a></p> -->
   
-        
-        {% if messages %}
-        {% for message in messages %}
 
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show " role="alert">
-          <strong>Register system</strong> 
-          <div>
-                      {{ message }}
-          </div>
-
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
 
 
 

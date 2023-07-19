@@ -11,25 +11,31 @@
 
 
 
-<main class="container">
-  
-    <form method="POST">
-        {% csrf_token %}
+<main class="container bg-body-secondary rounded align-items-center justify-content-center">
 
-        <div class="container">
-  
-            {{register_form|crispy}}
-  
-        </div>
-          
+    <div class="row">
 
-        <div class="modal-footer justify-content-center">
-          <button type="submit" class="btn btn-primary" >Create account</button>
-        </div>
+        <div class="col-3"></div>
 
-    </form>
-
-
+            <div class="col-6">
+                <form method="POST">
+                    {% csrf_token %}
+            
+                    <div class="container">
+            
+                        {{register_form|crispy}}
+            
+                    </div>
+                    
+            
+                    <div class="modal-footer justify-content-center">
+                    <button type="submit" class="btn btn-primary" >Create account</button>
+                    </div>
+            
+                </form>
+            </div>
+        <div class="col-3"></div>
+    </div>
 </div>
 
   
