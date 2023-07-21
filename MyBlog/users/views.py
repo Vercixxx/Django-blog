@@ -44,3 +44,9 @@ def login_view(request):
             return redirect('login_view')
     else:
         return render(request, 'user_form/login.html')
+    
+    
+def logout_user(request):
+    logout(request)
+    messages.info(request, "Sucesfully logged out")
+    return redirect('home_view')
