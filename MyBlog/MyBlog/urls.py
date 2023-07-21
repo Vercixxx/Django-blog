@@ -29,3 +29,8 @@ urlpatterns = [
     path('login/', users_views.login_view, name='login_view'),
     
 ]
+
+# Admin configureables
+admin.site.site_header = "Chris Admin site"
+admin.site.site_title = "Admin"
+admin.site.index_title = "Welcome on Admin site! ^_^"
