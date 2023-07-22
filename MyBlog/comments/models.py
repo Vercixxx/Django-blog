@@ -19,6 +19,7 @@ class Comment(models.Model):
             # Tworzenie obiektu Posts_comments
             post_comment = Posts_comments(post_id=self.post_id, comment_id=self)
             post_comment.save()
+            
         
 class Posts_comments(models.Model):
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE, to_field='id')
@@ -29,6 +30,12 @@ class Posts_comments(models.Model):
     def save(self, *args, **kwargs):
         self.combined_key = f'{self.post_id_id}-{self.comment_id_id}'
         super().save(*args, **kwargs)
+        
+        # Add 1 to comments counter in post
+        post = self.post_id
+        post.comments = post.comment_set.count()  # Aktualizacja liczby komentarzy
+        post.save()
+        
 
     def __str__(self):
         return self.combined_key
