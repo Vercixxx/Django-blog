@@ -19,6 +19,7 @@ from django.urls import path
 
 from blog import views as blog_views
 from users import views as users_views
+from posts import views as posts_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +30,8 @@ urlpatterns = [
     path('login/', users_views.login_view, name='login_view'),
     path('logout_user', users_views.logout_user, name="logout_user"),
     path('user/', users_views.user_account, name="user_account"),    
+    # post
+    path('post/<int:post_id>/', posts_views.post_view, name="post_view"),    
     
 ]
 

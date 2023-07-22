@@ -103,21 +103,22 @@
 
   </div>
 
-        <!-- <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue reading...</a></p> -->
 
 
   <!-- Posts section -->
   <div class="container">
     <div class="row">
       <div class="col">
+        
         <!-- Articles -->
-
         {% for post in posts %}
         <article class="blog-post">
-          <h2 class="display-6 link-body-emphasis mb-1">
-            {{ post.title }}
-          </h2>
-    
+          <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'post_view' post.id %}"> 
+            <h2 class="display-6 link-body-emphasis mb-1">
+              {{ post.title }}
+            </h2>
+          </a>
+          
           <p class="blog-post-meta">January 1, 2021 by <a href="#">
             {{ post.author }}
           </a></p>
@@ -146,7 +147,7 @@
           <ul>
             <!-- List of posts titles -->
             {% for post in posts %}
-              <button type="button" class="btn btn-dark text-start">
+              <button type="button" class="btn btn-dark text-start" onclick="window.location.href = '{% url 'post_view' post.id %}'">>
                 {{ post.title }}
               </button>
             {% endfor %}

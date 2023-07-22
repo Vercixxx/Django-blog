@@ -58,8 +58,6 @@ def logout_user(request):
 @login_required(login_url='/user/login.html')
 def user_account(request):
 
-            
-    
     if not request.user.is_authenticated:
         messages.info(request, 'Access denied, log in first!')
         return redirect('login_view')
