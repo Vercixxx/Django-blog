@@ -36,7 +36,7 @@
                 {% csrf_token %}
         
                 <!-- Title -->
-                <h1 class="display-5 fst-italic my-4">User {{ user.username }}</h1>
+                <h1 class="display-5 fst-italic my-4">User - {{ user.username }}</h1>
         
                 <!-- Username section -->
                 <div class="row mb-3">
@@ -48,7 +48,7 @@
                   </div>
                   <!-- Input form for username -->
                   <div class="col-10 form-floating d-flex justify-content-center align-items-center">
-                    <input type="text" class="form-control" name="username" value="{{ user.username }}" />
+                    <input type="text" class="form-control" name="username" maxlength="10" minlength="4" value="{{ user.username }}" />
                   </div>
                 </div>
         
@@ -77,7 +77,7 @@
                     </div>
                     <!-- Input form for password -->
                     <div class="col-10 form-floating d-flex justify-content-center align-items-center">
-                    <input type="password" class="form-control" name="password1" placeholder="********">
+                    <input type="password" class="form-control" name="password1">
                     <label for="password1" class="text-center">Password</label>
                     </div>
                 </div>
@@ -94,8 +94,8 @@
                     </div>
                     <!-- Input form for password -->
                     <div class="col-10 form-floating d-flex justify-content-center align-items-center">
-                    <input type="password" class="form-control" name="password2" placeholder="********" >
-                    <label for="password2" class="text-center">Password</label>
+                    <input type="password" class="form-control" name="password2">
+                    <label for="password1" class="text-center">Repeat password</label>
                     </div>
                 </div>
         
