@@ -119,9 +119,13 @@
             </h2>
           </a>
           
-          <p class="blog-post-meta"> {{  post.posted_date|date:"F d, Y" }} 
+          <p class="blog-post-meta"> 
+            {{  post.posted_date|date:"F d, Y" }} 
           - Added by 
               {{ post.author }}
+              
+              views: {{post.views}}
+              comments: {{post.comments}}
           </p>
     
           <hr>

@@ -13,6 +13,12 @@ class Comment(models.Model):
     class Meta:
         db_table = 'Comment'
         
+    def save(self, *args, **kwargs):
+            super().save(*args, **kwargs)  # Wywołanie oryginalnej metody save, która zapisuje obiekt w bazie danych
+
+            # Tworzenie obiektu Posts_comments
+            post_comment = Posts_comments(post_id=self.post_id, comment_id=self)
+            post_comment.save()
         
 class Posts_comments(models.Model):
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE, to_field='id')

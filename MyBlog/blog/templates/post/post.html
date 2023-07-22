@@ -69,6 +69,17 @@
           </article>
         
 
+
+<hr>
+    <!-- Comments secion -->
+    Comments:<br>
+          {% for comment in comments %}
+          
+            Author: {{comment.author}}<br>
+            Likes: {{comment.likes}}<br>
+            Content: {{comment.content}}<br>
+
+          {% endfor %}
  
     </div>
  
