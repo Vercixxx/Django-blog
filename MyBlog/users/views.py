@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 
 # auth
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from users.forms import UserRegisterForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
+
 
 def register_view(request):
 
@@ -25,7 +28,7 @@ def register_view(request):
     output = {
         'register_form':register_form,
     }    
-    return render(request, 'user_form/register.html', output)
+    return render(request, 'user/register.html', output)
 
 
 def login_view(request):
@@ -43,10 +46,36 @@ def login_view(request):
             messages.info(request, "Wrong username or password")
             return redirect('login_view')
     else:
-        return render(request, 'user_form/login.html')
+        return render(request, 'user/login.html')
     
     
 def logout_user(request):
     logout(request)
     messages.info(request, "Sucesfully logged out")
     return redirect('home_view')
+ 
+ 
+@login_required(login_url='/user/login.html')
+def user_account(request):
+
+            
+    
+    if not request.user.is_authenticated:
+        messages.info(request, 'Access denied, log in first!')
+        return redirect('login_view')
+    
+    else:
+        if request.method == 'POST':
+            user_id = request.user.id
+            
+            new_username = request.POST["username"]
+            new_email = request.POST['email']
+            new_password1 = request.POST["password1"]
+            new_password2 = request.POST["password2"]
+            
+            user = User.objects.get(id=user_id)
+            user.username = new_username
+            user.save()
+            return redirect('user_account')
+        
+        return render(request, 'user/user_account.html')
