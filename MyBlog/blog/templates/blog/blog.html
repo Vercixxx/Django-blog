@@ -119,9 +119,10 @@
             </h2>
           </a>
           
-          <p class="blog-post-meta">January 1, 2021 by <a href="#">
-            {{ post.author }}
-          </a></p>
+          <p class="blog-post-meta"> {{  post.posted_date|date:"F d, Y" }} 
+          - Added by 
+              {{ post.author }}
+          </p>
     
           <hr>
     
@@ -132,6 +133,7 @@
         {% endfor %}
     
       </div>
+
 
       <!-- Legend of posts -->
       <div class="col-4">
@@ -148,7 +150,11 @@
             <!-- List of posts titles -->
             {% for post in posts %}
               <button type="button" class="btn btn-dark text-start" onclick="window.location.href = '{% url 'post_view' post.id %}'">>
-                {{ post.title }}
+
+                    {{ post.title }}
+
+                    <p>{{  post.posted_date|date:"F d, Y" }}</p>
+
               </button>
             {% endfor %}
 
