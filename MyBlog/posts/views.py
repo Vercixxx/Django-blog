@@ -1,10 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 
 # Posts
 from posts.models import Post 
 from comments.models import Comment
 from comments.models import Posts_comments
+
+from django.contrib.auth.decorators import login_required
 
 
 def post_view(request, post_id):
@@ -54,3 +56,18 @@ def dislike_clicked(request):
         print(f'Like clicked! Post ID: {post_id}, User ID: {user_id}')
 
     return HttpResponse()
+
+
+def add_post_view(request):
+    print("WORKING ")
+    if request.method == 'POST':
+        print("WORKING post")
+        user_id = request.user.id
+        title = request.POST.get("post_title")
+        content = request.POST.get("post_content")
+        
+        Post.objects.create(author_id=user_id, title=title, content=content)
+        
+        return redirect('home_view')
+
+    return render(request, 'blog/blog.html')

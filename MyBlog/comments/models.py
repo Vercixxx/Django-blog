@@ -22,9 +22,9 @@ class Comment(models.Model):
         db_table = 'Comment'
         
     def save(self, *args, **kwargs):
-            super().save(*args, **kwargs)  # Wywołanie oryginalnej metody save, która zapisuje obiekt w bazie danych
+            super().save(*args, **kwargs)
 
-            # Tworzenie obiektu Posts_comments
+
             post_comment = Posts_comments(post_id=self.post_id, comment_id=self)
             post_comment.save()
             
