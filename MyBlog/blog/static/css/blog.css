@@ -127,22 +127,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* change-icon */
-#change-icon {
-
+#change-icon,
+#change-icon-fill {
+  cursor: pointer;
 }
 
-
 #change-icon:hover {
-  display: none; 
+  display: none;
 }
 
 #change-icon-fill {
   display: none;
 }
 
-
 #change-icon:hover + #change-icon-fill {
   display: inline-block;
-  
 }
 

@@ -7,7 +7,10 @@ class Comment(models.Model):
     id = models.AutoField(primary_key=True)
     author = models.TextField(default = "User")
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE, to_field='id')
+    
     likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+    
     content = models.TextField()
 
     class Meta:

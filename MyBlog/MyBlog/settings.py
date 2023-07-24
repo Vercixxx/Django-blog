@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Logging 
 LOGIN_URL = '/user/login.html'
-LOGIN_REDIRECT_URL = '/'
+
 
 
 # Internationalization

@@ -31,7 +31,12 @@ urlpatterns = [
     path('logout_user', users_views.logout_user, name="logout_user"),
     path('user/', users_views.user_account, name="user_account"),    
     # post
-    path('post/<int:post_id>/', posts_views.post_view, name="post_view"),    
+    path('post/<int:post_id>/', posts_views.post_view, name="post_view"),   
+    
+    # Post likes / disklikes
+    path('like_clicked/', posts_views.like_clicked, name='like_clicked'),
+    path('dislike_clicked/', posts_views.dislike_clicked, name='dislike_clicked'),  
+    
     
 ]
 
