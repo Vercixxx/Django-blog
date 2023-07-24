@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 
 # Posts
 from posts.models import Post 
@@ -71,3 +72,12 @@ def add_post_view(request):
         return redirect('home_view')
 
     return render(request, 'blog/blog.html')
+
+
+def delete_post_view(request, post_id):
+    if request.method == 'POST':
+        post = get_object_or_404(Post, id=post_id)
+        post.delete()
+        messages.warning(request, "Post has been deleted")
+        return redirect('home_view')
+    return redirect('home_view')
