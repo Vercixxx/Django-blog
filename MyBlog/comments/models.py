@@ -1,11 +1,16 @@
 from django.db import models
+from django.utils import timezone
+
 from posts.models import Post
 
-# Create your models here.
+
 
 class Comment(models.Model):
     id = models.AutoField(primary_key=True)
+    
     author = models.TextField(default = "User")
+    posted_date = models.DateTimeField(default=timezone.now)
+    
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE, to_field='id')
     
     likes = models.IntegerField(default=0)

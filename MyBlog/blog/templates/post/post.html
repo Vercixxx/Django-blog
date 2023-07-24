@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <div class="container bg-body-secondary rounded vh-100">
+    <div class="container bg-body-secondary rounded min-vh-100">
         
     <!-- Go back button -->
     <div class="d-flex justify-content-evenly">
@@ -143,7 +143,7 @@
     <!-- Comments secion -->
 
     <div class="container">
-      <div class="row border-top border-bottom border-5">
+      <div class="row border-top border-bottom border-5 mb-5">
         <div class="col d-flex align-items-center justify-content-center">
           <h1 class="display-6">Comments</h1>
         </div>
@@ -151,27 +151,30 @@
 
 
           {% for comment in comments %}
-          <div class="d-flex justify-content-between">
-            <div class="p-2">
-              {{ comment.author }} 
+          <div class="container border rounded mb-5">
+
+            <div class="d-flex justify-content-between border-bottom fs-5">
+              <div class="p-2">
+                {{ comment.author }} 
+              
+                <!-- data -->
+              
+              </div>
+
+              <div class=" p-2">
+                Likes: {{comment.likes}}
+                Disikes: {{comment.dislikes}}
+              </div>
+
+            </div>
+        
+            <div class="row">
+              <div class="col">
+                {{comment.content}}
+              </div>
+            </div>
             
-              <!-- data -->
-            
-            </div>
-
-            <div class=" p-2">
-              Likes: {{comment.likes}}
-              Disikes: {{comment.dislikes}}
-            </div>
-
           </div>
-       
-          <div class="row">
-            <div class="col">
-              {{comment.content}}
-            </div>
-          </div>
-
           {% endfor %}
  
     </div>
