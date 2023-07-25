@@ -37,6 +37,8 @@ urlpatterns = [
     path('post/<int:post_id>/', posts_views.post_view, name="post_view"),   
     path('add_post/', posts_views.add_post_view, name='add_post_view'),
     path('delete_post/<int:post_id>/', posts_views.delete_post_view, name='delete_post_view'),
+    path('save_post/<int:post_id>/', posts_views.save_post, name='save_post'),
+
     
     # Post likes / disklikes
     path('like_clicked/', posts_views.like_clicked, name='like_clicked'),

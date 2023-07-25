@@ -13,7 +13,7 @@ from comments.models import Comment
 
 def home_view(request):
 
-    data = {'posts':Post.objects.all(), 
+    data = {'posts':Post.objects.order_by('-posted_date'), 
             'Comments':Comment, 
             'timezone':timezone, 
             'datetime':datetime,

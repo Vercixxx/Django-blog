@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from django.urls import reverse
 
 # Posts
 from posts.models import Post 
@@ -60,9 +61,7 @@ def dislike_clicked(request):
 
 
 def add_post_view(request):
-    print("WORKING ")
     if request.method == 'POST':
-        print("WORKING post")
         user_id = request.user.id
         title = request.POST.get("post_title")
         content = request.POST.get("post_content")
@@ -81,3 +80,22 @@ def delete_post_view(request, post_id):
         messages.warning(request, "Post has been deleted")
         return redirect('home_view')
     return redirect('home_view')
+
+
+def save_post(request, post_id):
+    if request.method == 'POST':
+        post = get_object_or_404(Post, id=post_id)
+        
+        new_title = request.POST.get("post_title")
+        new_content = request.POST.get("post_content")
+        
+        post.title = new_title
+        post.content = new_content
+        post.save()
+        
+        # messages.info(request, "Post has been sucesfully changed")
+        
+        url = reverse('post_view', args=[post_id])
+        
+        return redirect(url)
+    

@@ -19,21 +19,12 @@
       </div>
 
 
-    <!-- Edit button -->
+
     {% csrf_token %}
     {% if user.is_authenticated and user.id == post.author.id %}
-
-    <div class="p-2 " style="display: none;">
-        <button type="submit" class="btn btn-lg btn-success fs-6 d-flex flex-row-reverse" id="button_save_post">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-            </svg>
-            Save
-        </button>
-    </div>
     
-    <div class="p-2">
+    <!-- Edit button -->
+    <div class="p-2" id="button_edit_container">
         <button type="button" class="btn btn-lg btn-success fs-6 d-flex flex-row-reverse" id="button_edit">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -83,7 +74,7 @@
     </div>
 
 
-    <article class="blog-post p-2"> 
+    <article class="blog-post p-2" id="normal_post"> 
           <h2 class="display-6 link-body-emphasis mb-1">
             {{ post.title }}
           </h2>
@@ -95,8 +86,11 @@
                 <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
                 <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
               </svg>
-              {{  post.posted_date|date:"F d, Y" }} 
-              - Added by 
+              {{  post.posted_date|date:"F d, Y" }},
+              by
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+              </svg>
                   {{ post.author }}
                   
             </div>
@@ -170,70 +164,138 @@
         <p >
           {{ post.content }}
         </p>
-      </article>
+
+
         
-
-
-
-    <!-- Comments secion -->
-
-    <div class="container">
-      <div class="row border-top border-bottom border-5 mb-5">
-        <div class="col d-flex align-items-center justify-content-center">
-          <h1 class="display-6">Comments</h1>
-        </div>
-      </div>
-
-
-          {% for comment in comments %}
-          <div class="container border rounded mb-5">
-
-            <div class="d-flex justify-content-between fs-5">
-              <div class="p-2">
-                Posted by 
-                {{ comment.author }}
-
-              </div>
-
-              <div class=" p-6">
-                Likes: {{comment.likes}}
-                Disikes: {{comment.dislikes}}
-              </div>
-
-            </div>
-            
-            <div class="fs-6 border-bottom p-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
-                <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
-                <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-              </svg>
-              {{  comment.posted_date|date:"F d, Y" }}
-              
-            </div>
-        
-            <div class="row">
-              <div class="col">
-                {{comment.content}}
-              </div>
-            </div>
-            
-          </div>
-          {% endfor %}
- 
+<!-- Comments secion -->
+<div class="container">
+  <div class="row border-top border-bottom border-5 mb-5">
+    <div class="col d-flex align-items-center justify-content-center">
+      <h1 class="display-6">Comments</h1>
     </div>
- 
+  </div>
+
+
+      {% for comment in comments %}
+      <div class="container border rounded mb-5">
+
+        <div class="d-flex justify-content-between fs-5">
+          <div class="p-2">
+            Posted by 
+            <span class="border border-2 rounded p-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+              </svg>
+              {{ comment.author }}
+            </span>
+          </div>
+
+          <div class=" p-6">
+            Likes: {{comment.likes}}
+            Dislikes: {{comment.dislikes}}
+          </div>
+
+        </div>
+        
+        <div class="fs-6 border-bottom p-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
+            <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+            <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+          </svg>
+          {{  comment.posted_date|date:"F d, Y" }}
+          
+        </div>
+    
+        <div class="row">
+          <div class="col">
+            {{comment.content}}
+          </div>
+        </div>
+        
+      </div>
+      {% endfor %}
+
+</div>
+</article>
+
+
+
+<!-- ============= Edit post ============= -->
+<article class="blog-post p-2" id="edit_post"  style="display: none;"> 
+
+  <form method="POST" action="{% url 'save_post' post.id %}">
+    {% csrf_token %}
+
+    <input type="hidden" name="post_id" value="{{ post.id }}">
+
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="basic-addon1">Title</span>
+      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" value="{{ post.title }}" name="post_title" required >
+    </div>
+  
+    <div class="input-group">
+      <span class="input-group-text">Content</span>
+      <textarea class="form-control" aria-label="With textarea" rows="20" name="post_content" required>{{ post.content }}</textarea>
+    </div>
+
+
+    <!-- Save button -->
+    <div class="input-group d-flex justify-content-center mt-2" id="button_save_post_container">
+      <button type="submit" class="btn btn-lg btn-success fs-6 d-flex flex-row-reverse" id="button_save_post">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+          </svg>
+          Save
+      </button>
+    </div>
+
+  </form>
+
+</article>
+<!-- ============= End Edit post ============= -->
+
+
+
+
+    
 
   </div>
 
 
+{% endblock %}
+
+<!-- Scripts block -->
+{% block scripts %}
+  <script>
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const normalPost = document.getElementById('normal_post');
+    const editPost = document.getElementById('edit_post');
+    const button_edit_container = document.getElementById('button_edit_container');
+    const buttonEdit = document.getElementById('button_edit');
+    const buttonSavePostContainer = document.getElementById('button_save_post_container');
+    const buttonSavePost = document.getElementById('button_save_post');
+
+    buttonEdit.addEventListener('click', function () {
+      // Ukryj normalny post i pokaż post do edycji oraz przycisk do zapisania postu
+      normalPost.style.display = 'none';
+      editPost.style.display = 'block';
+      buttonSavePostContainer.style.display = 'block';
+      button_edit_container.style.display = 'none';
+      
+    });
+
+    buttonSavePost.addEventListener('click', function () {
+      // Zapisz post (tutaj możesz dodać odpowiednią logikę do zapisania postu)
+      // Następnie ukryj post do edycji i przycisk do zapisania postu oraz pokaż normalny post
+      normalPost.style.display = 'block';
+      editPost.style.display = 'none';
+      buttonSavePostContainer.style.display = 'none';
+    });
+  });
 
 
-
-
-
-
-
-
-
-
+    
+  </script>
 {% endblock %}
