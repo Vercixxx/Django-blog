@@ -93,8 +93,6 @@ def save_post(request, post_id):
         post.content = new_content
         post.save()
         
-        # messages.info(request, "Post has been sucesfully changed")
-        
         url = reverse('post_view', args=[post_id])
         
         return redirect(url)
