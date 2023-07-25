@@ -3,32 +3,43 @@ from django.shortcuts import render, redirect
 # auth
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from users.forms import UserRegisterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
+from .forms import RegisterForm
 
 
 def register_view(request):
 
     if request.method == 'POST':
-        register_form = UserRegisterForm(request.POST)
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+  
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            password = request.POST.get('password1')
+            
+            password2 = form.cleaned_data.get('password2')
+            if password != password2:
+                return render(request, 'user/register.html', {'form': form, 'error_message': 'Passwords do not match.'})
+
+            user = User.objects.create_user(username=username, email=email, password=password)
+
+            messages.success(request, f"Account created for {username}")
+            return redirect('home_view')
         
-        if register_form.is_valid():
-            register_form.save()
-            
-            register_username = register_form.cleaned_data.get('username')
-            
-            messages.success(request, f'Account created for {register_username}!')
-            return redirect('home_view') 
-            
+
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error: {error}")
+            form = RegisterForm()
+        
     else:
-        register_form = UserRegisterForm()
-        
-    output = {
-        'register_form':register_form,
-    }    
-    return render(request, 'user/register.html', output)
+        form = RegisterForm()
+
+    return render(request, 'user/register.html', {'form': form})
+
 
 
 def login_view(request):
