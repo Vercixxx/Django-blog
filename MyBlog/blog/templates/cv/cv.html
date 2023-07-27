@@ -1,0 +1,99 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block head %}
+<meta name="description" content="">
+<title>CV</title>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="container">
+<header class="border-bottom lh-1 py-3">
+<div class="row flex-nowrap justify-content-between align-items-center">
+
+  <div class="col-1 text-center">
+    <a class="blog-header-logo text-body-emphasis text-decoration-none" href="#">Blog</a>
+  </div>
+  <div class="col-4 d-flex justify-content-end align-items-center">
+
+
+<!-- Log in button / log out button-->
+{% csrf_token %}
+    {% if user.is_authenticated %}
+
+    <div class="row">
+      <div class="col">
+        <button class="btn btn-sm btn-outline-secondary fs-6 mx-2" onclick="window.location.href = '{% url 'user_account' %}'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+          </svg>
+          {{user.username }}
+        </button> 
+      </div>
+    </div>
+    
+    <button type="button" class="btn btn-sm btn-outline-danger fs-6 mx-2" onclick="window.location.href = '{% url 'logout_user' %}'">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16">
+        <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z"/>
+        <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z"/>
+      </svg>
+      Log out
+    </button>
+
+    {% else %}
+
+    <button type="button" class="btn btn-sm btn-outline-primary fs-6 d-flex align-items-center p-2" onclick="window.location.href = '{% url 'login_view' %}'">
+      <span class="me-2">Log in</span>
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
+        <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+      </svg>
+
+    </button>
+
+    {% endif %}
+
+
+
+
+
+  </div>
+</div>
+</header>
+
+
+
+
+
+<div class="nav-scroller py-1 mb-3 border-bottom">
+<nav class="nav nav-underline justify-content-between">
+<a class="nav-item nav-link link-body-emphasis active" href="{% url 'home_view' %}">Blog</a>
+<a class="nav-item nav-link link-body-emphasis" href="{% url 'cv_view' %}">CV</a>
+  <a class="nav-item nav-link link-body-emphasis" href="#">Site3</a>
+  <a class="nav-item nav-link link-body-emphasis" href="#">Site4</a>
+
+</nav>
+</div>
+</div>
+
+
+
+<main class="container min-vh-100">
+    
+    <h1 class="display-1">CV ^^</h1>
+
+
+</main>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

@@ -1,7 +1,12 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-{% load crispy_forms_tags %}
+
+{% block head %}
+<meta name="description" content="">
+<title>Account - {{ user.username }}</title>
+{% endblock %}
+
 
 {% block content %}
 

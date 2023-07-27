@@ -20,6 +20,7 @@ from django.urls import path
 from blog import views as blog_views
 from users import views as users_views
 from posts import views as posts_views
+from cv import views as cv_views
 
 app_name = 'blog'
 
@@ -43,6 +44,9 @@ urlpatterns = [
     # Post likes / disklikes
     path('like_clicked/', posts_views.like_clicked, name='like_clicked'),
     path('dislike_clicked/', posts_views.dislike_clicked, name='dislike_clicked'),  
+    
+    # CV
+    path('cv/', cv_views.cv_view, name='cv_view'),
     
     
 ]
