@@ -109,13 +109,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Logging 
+LOGIN_URL = '/user/login.html'
+
+# Auto logging off when user close tab
+ESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Auto logging off after 1 hour
+SESSION_COOKIE_AGE = 3600
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
@@ -137,5 +145,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
 CRISPY_TEMPLATE_PACK = "bootstrap5"

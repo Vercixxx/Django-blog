@@ -14,6 +14,9 @@ class Post(models.Model):
     
     views = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
+    
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'Post'
