@@ -44,6 +44,7 @@ urlpatterns = [
     # Post likes / disklikes
     path('like_clicked/', posts_views.like_clicked, name='like_clicked'),
     path('dislike_clicked/', posts_views.dislike_clicked, name='dislike_clicked'),  
+    path('get_like_dislike_counts/', posts_views.get_like_dislike_counts, name='get_like_dislike_counts'),
     
     # CV
     path('cv/', cv_views.cv_view, name='cv_view'),

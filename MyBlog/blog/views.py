@@ -7,6 +7,7 @@ from datetime import datetime
 
 # models
 from posts.models import Post 
+from posts.models import PostsThumbs 
 from comments.models import Comment 
 
 
@@ -17,6 +18,7 @@ def home_view(request):
             'Comments':Comment, 
             'timezone':timezone, 
             'datetime':datetime,
+            'thumbs':PostsThumbs,
             }
     
     return render(request, 'blog/blog.html', data)

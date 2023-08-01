@@ -20,3 +20,29 @@ class Post(models.Model):
 
     class Meta:
         db_table = 'Post'
+        
+        
+class PostsThumbs(models.Model):
+    
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, to_field='id')
+    
+    like = models.BooleanField(default=False)
+    dislike = models.BooleanField(default=False)
+    
+    
+    
+    @property
+    def combined_key(self):
+        return f'{self.user_id}-{self.post_id}'
+    
+    def save(self, *args, **kwargs):
+        self.combined_key
+        super().save(*args, **kwargs)   
+    
+    
+    def __str__(self):
+        return self.combined_key    
+    
+    class Meta:
+        db_table = 'Posts_thumbs'
