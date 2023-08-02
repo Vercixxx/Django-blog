@@ -155,6 +155,100 @@
   <!-- END Adding new post section -->
 
 
+
+    <div class="display-6 d-flex justify-content-center my-4">
+      Posts
+    </div>
+    
+
+    <!-- Pages handle -->
+
+      <div class="d-flex justify-content-center align-items-center mb-3 ">
+
+        <!-- previous page if exist -->
+        {% if posts.has_previous %}
+          <div class="p-2 d-flex justify-content-center gap-1 ">
+            <a href="?page=1" class="btn btn-outline-secondary " >
+              First page
+            </a>
+            <a href="?page={{ posts.previous_page_number }}"  class="btn btn-outline-secondary">
+              &laquo; 
+            </a>
+          </div>
+
+        {% else %} 
+        <div class="p-2 d-flex justify-content-center gap-1">
+          <a class="btn btn-outline-secondary disabled">
+            
+            First page
+          </a>
+          <a class="btn btn-outline-secondary disabled">
+            &laquo; 
+          </a>
+        </div>
+        {% endif %}
+
+        <!-- actual page number -->
+        <div class="p-2 d-flex justify-content-center align-items-center">
+          Page 
+      <!-- test -->
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <span class="border border-2 p-2" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{posts.number}}
+                        </span>
+                        <ul class="dropdown-menu">
+                            {% for page_num in posts.paginator.page_range %}
+                                <li><a class="dropdown-item" href="?page={{ page_num }}">{{page_num}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+      of {{posts.paginator.num_pages}}
+      <!-- test -->
+
+        </div>
+
+
+        <!-- next page if exist -->
+        {% if posts.has_next %}
+        <div class="p-2 d-flex justify-content-center gap-1">
+          <a href="?page={{ posts.next_page_number }}"  class="btn btn-outline-secondary">
+            &raquo;
+          </a>
+          <a href="?page={{ posts.paginator.num_pages }}"  class="btn btn-outline-secondary">
+            Last page 
+
+          </a>
+        </div>
+        {% else %} 
+
+        <div class="p-2 d-flex justify-content-center gap-1">
+          <a class="btn btn-outline-secondary disabled">
+            &raquo;
+          </a>
+          <a class="btn btn-outline-secondary disabled">
+            Last page 
+          </a>
+        </div>
+
+        {% endif %}
+
+
+      </div>
+    <!-- END of pages handle -->
+
+
+  
         <!-- Articles -->
         {% for post in posts %}
         <article class="blog-post border border-secondary-subtle p-2 rounded">
@@ -324,14 +418,14 @@
           <div class="container text-center d-flex justify-content-center align-items-center ">
             <!-- Title -->
             <p class="blog-header-logo text-body-emphasis text-decoration-none">
-              Legend
+              Lastest posts
             </p>
           </div>
 
 
           <ul>
             <!-- List of posts titles -->
-            {% for post in posts %}
+            {% for post in all_posts %}
               <button type="button" class="btn btn-dark text-start" onclick="window.location.href = '{% url 'post_view' post.id %}'">>
 
                     {{ post.title }}
