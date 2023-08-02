@@ -27,7 +27,17 @@ def home_view(request):
     if request.method == 'POST'  and 'search_content' in request.POST:
         searching = request.POST['search_content']
 
-        all_posts = all_posts.filter(Q(title__icontains=searching) | Q(content__icontains=searching))
+        title = request.POST.get('checkbox_title') == 'on'
+        content= request.POST.get('checkbox_content') == 'on'
+        users = request.POST.get('checkbox_users') == 'on'
+
+        filters = [
+            Q(title__icontains=searching) if title else Q(),
+            Q(content__icontains=searching) if content else Q(),
+            Q(author__username__icontains=searching) if users else Q(),
+        ]
+
+        all_posts =  all_posts.filter(*filters)
         
 	
 	# Pagination
