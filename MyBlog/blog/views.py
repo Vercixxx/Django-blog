@@ -48,7 +48,7 @@ def home_view(request):
 
 
     data = {'posts':page_obj, 
-            'all_posts':all_posts, 
+            'all_posts':all_posts[:6], 
             'Comments':Comment, 
             'timezone':timezone, 
             'datetime':datetime,
