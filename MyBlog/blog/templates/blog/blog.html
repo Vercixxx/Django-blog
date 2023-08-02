@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load static %}
+{% load tz %}
 
 {% block head %}
 <meta name="description" content="">
@@ -23,47 +24,7 @@
       </div>
 
 
-      <!-- Search bar section -->
-      <div class="col-3 text-center">
-
-        <form class="d-flex" role="search" method="POST" action="{% url 'home_view' %}">
-          {% csrf_token %}
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_content">
-
-          <div class="btn-group">
-            <button type="submit" class="btn btn-outline-success" >Search</button>
-            <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-              <span class="visually-hidden">Toggle Dropdown</span>
-            </button>
-            
-            <div class="dropdown-menu">
-              <li><a class="dropdown-item disabled text-center">Choose filters</a></li>
-              <li><hr class="dropdown-divider"></li>
-
-              <div>
-                <input type="checkbox" class="btn-check dropdown-item" id="btncheck1" name="checkbox_title" autocomplete="off" checked>
-                <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck1">Title</label>
-              </div>
-
-              <div>
-                <input type="checkbox" class="btn-check dropdown-item" id="btncheck2" name="checkbox_content" autocomplete="off">
-                <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck2">Content</label>
-              </div>
-
-              <div>
-                <input type="checkbox" class="btn-check dropdown-item" id="btncheck3" name="checkbox_users" autocomplete="off">
-                <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck3">User</label>
-              </div>
-
-            </div>
-
-          </div>
-        </form>
-
-      </div>
-      
-      <!-- End of search bar section -->
-
+    
 
 
 
@@ -138,8 +99,8 @@
     <nav class="nav nav-underline justify-content-between">
       <a class="nav-item nav-link link-body-emphasis active" href="{% url 'home_view' %}">Blog</a>
       <a class="nav-item nav-link link-body-emphasis" href="{% url 'cv_view' %}">CV</a>
-      <a class="nav-item nav-link link-body-emphasis" href="#">Site3</a>
-      <a class="nav-item nav-link link-body-emphasis" href="#">Site4</a>
+      <a class="nav-item nav-link link-body-emphasis disabled" href="#">Unicorns online</a>
+      <a class="nav-item nav-link link-body-emphasis disabled" href="#">Pirates</a>
 
     </nav>
   </div>
@@ -163,6 +124,66 @@
   </div>
   {% endfor %}
   {% endif %}
+
+
+
+  <!-- Search bar section -->
+  <div class="text-center mb-5 d-flex justify-content-end">
+
+    <form role="search" method="POST" action="{% url 'home_view' %}">
+      {% csrf_token %}
+
+
+
+      <div class="input-group">
+        
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_content">
+        <button type="submit" class="btn btn-outline-success" >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-2" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+          Search
+        </button>
+        <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+          <span class="visually-hidden">Toggle Dropdown</span>
+        </button>
+        
+        <div class="dropdown-menu">
+          <li><a class="dropdown-item disabled text-center">Choose filters</a></li>
+          <li><hr class="dropdown-divider"></li>
+
+          <div>
+            <input type="checkbox" class="btn-check dropdown-item" id="btncheck1" name="checkbox_title" autocomplete="off" checked>
+            <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck1">Title</label>
+          </div>
+
+          <div>
+            <input type="checkbox" class="btn-check dropdown-item" id="btncheck2" name="checkbox_content" autocomplete="off">
+            <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck2">Content</label>
+          </div>
+
+          <div>
+            <input type="checkbox" class="btn-check dropdown-item" id="btncheck3" name="checkbox_users" autocomplete="off">
+            <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck3">User</label>
+          </div>
+
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+  
+  <!-- End of search bar section -->
+
+
+
+
+
+
+
+
+
 
   <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary" style="background-image: url('{% static "images/mountains.jpg" %}'); background-size: cover; background-position: center; filter: brightness(70%);">
 
@@ -531,12 +552,21 @@
           <ul>
             <!-- List of posts titles -->
             {% for post in all_posts %}
-            <button type="button" class="btn btn-dark text-start"
-              onclick="window.location.href = '{% url 'post_view' post.id %}'">>
+            <button type="button" class="btn btn-outline-secondary text-start mb-2 w-100 border-0"
+              onclick="window.location.href = '{% url 'post_view' post.id %}'">
 
-              {{ post.title }}
+              <p class="fw-medium mb-1">
+                {{ post.title }}
+              </p>
+              
 
-              <p>{{ post.posted_date|date:"F d, Y" }}</p>
+              <p class="fw-lighter">
+                Posted by {{post.author}},
+                {% with time_difference=post.posted_date|timesince:timezone.now|slice:"-6" %}
+                {{ time_difference }} ago
+              {% endwith %}
+
+              </p>
 
             </button>
             {% endfor %}
