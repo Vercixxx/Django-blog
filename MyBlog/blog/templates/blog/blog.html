@@ -29,12 +29,40 @@
         <form class="d-flex" role="search" method="POST" action="{% url 'home_view' %}">
           {% csrf_token %}
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_content">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+
+          <div class="btn-group">
+            <button type="submit" class="btn btn-outline-success" >Search</button>
+            <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+              <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            
+            <div class="dropdown-menu ">
+              <li><a class="dropdown-item disabled text-center">Search options</a></li>
+              <li><hr class="dropdown-divider"></li>
+
+              <div>
+                <input type="checkbox" class="btn-check dropdown-item" id="btncheck1" autocomplete="off">
+                <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck1">Titles</label>
+              </div>
+
+              <div>
+                <input type="checkbox" class="btn-check dropdown-item" id="btncheck2" autocomplete="off">
+                <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck2">Contents</label>
+              </div>
+
+              <div>
+                <input type="checkbox" class="btn-check dropdown-item" id="btncheck3" autocomplete="off">
+                <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck3">Users</label>
+              </div>
+
+            </div>
+
+          </div>
         </form>
 
       </div>
       
-      <!-- Search bar section -->
+      <!-- End of search bar section -->
 
 
 
@@ -154,6 +182,9 @@
     <div class="row">
       <div class="col">
 
+        <!-- Checking if search bar isn't used -->
+        {% if not searched %}
+        
         <!-- Adding new post section -->
         {% if user.is_authenticated %}
         <form method="POST" action="{% url 'add_post_view' %}" class="border border-secondary-subtle p-2 rounded mb-3">
@@ -190,11 +221,12 @@
         {% endif %}
         <!-- END Adding new post section -->
 
-
+        {% endif %}
+        <!-- End of checking if search bar isn't used -->
 
         <div class="display-6 d-flex justify-content-center my-4">
           {% if searched %}
-          Result for: "{{searched}}"
+          Results for: "{{searched}}"
 
           {% else %}
 
