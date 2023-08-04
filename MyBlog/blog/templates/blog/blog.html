@@ -8,13 +8,39 @@
 {% endblock %}
 
 
+{% block style %}
+<style>
+  /* Turning off arrows in page_selector */
+#page_selector::-webkit-inner-spin-button,
+#page_selector::-webkit-outer-spin-button,
+#page_selector::-webkit-inner-spin-button:hover,
+#page_selector::-webkit-outer-spin-button:hover {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#page_selector::-webkit-inner-spin-button,
+#page_selector::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#page_selector::-moz-number-spin {
+  display: none;
+}
+
+#page_selector::-ms-up-arrow,
+#page_selector::-ms-down-arrow {
+  display: none;
+}
+</style>
+{% endblock %}
+
+
 
 {% block content %}
 
-
-
-
-<div class="container" style="width: 100% !important;">
+<div class="container">
   <header class="border-bottom lh-1 py-3">
     <div class="row flex-nowrap justify-content-between align-items-center">
 
@@ -139,7 +165,7 @@
 
       <div class="input-group">
         
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search_content">
+        <input class="form-control " type="search" placeholder="Search" aria-label="Search" name="search_content">
         <button type="submit" class="btn btn-outline-success" >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-2" viewBox="0 0 16 16">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -286,38 +312,15 @@
           </div>
           {% endif %}
 
-          <!-- actual page number -->
+          <!-- Current page number -->
           <div class="p-2 d-flex justify-content-center align-items-center">
             Page
             <!-- test -->
-            <nav class="navbar navbar-expand-lg">
-              <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false"
-                  aria-label="Toggle navigation">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-                  <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                      <span class="border border-2 p-2" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{posts.number}}
-                      </span>
-                      <ul class="dropdown-menu">
-                        {% for page_num in posts.paginator.page_range %}
-                        <li><a class="dropdown-item" href="?page={{ page_num }}">{{page_num}}</a></li>
-                        {% endfor %}
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </nav>
+            <input type="number" id="page_selector" value="{{posts.number}}" min="0" max="{{posts.paginator.num_pages}}" class="form-control d-inline-block p-1 bg-body mx-2 text-center" style="width: fit-content;">
             of {{posts.paginator.num_pages}}
             <!-- test -->
 
           </div>
-
 
           <!-- next page if exist -->
           {% if posts.has_next %}
@@ -653,6 +656,20 @@
         console.error("Error:", error);
       });
   }
+
+
+  //paginator
+
+
+document.getElementById("page_selector").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    const page_selectorValue = document.getElementById("page_selector").value;
+    const url = "?page=" + page_selectorValue;
+    window.location.href = url;
+  }
+});
+
+ 
 
 </script>
 {% endblock %}
