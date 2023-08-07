@@ -10,6 +10,9 @@ class RegisterForm(forms.Form):
     email = forms.EmailField(required=False, help_text="Not required, used for password recovery")
     password1 = forms.CharField(widget=forms.PasswordInput, help_text="At least 8 characters", min_length=8, required=True)
     password2 = forms.CharField(widget=forms.PasswordInput, required=True)
+    
+    # Captcha
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
