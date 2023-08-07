@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import password_validation, update_session_auth_hash
 from django.contrib.auth.models import User
 from .forms import RegisterForm
 
@@ -83,8 +84,47 @@ def user_account(request):
             new_password2 = request.POST["password2"]
             
             user = User.objects.get(id=user_id)
-            user.username = new_username
+            
+            # check if username is unique
+            if new_username != user.username:
+                if User.objects.filter(username=new_username).exists():
+                    messages.info(request, 'Username already exist!')
+                else:
+                    user.username = new_username
+            
+
+            # Setting new email
+            if new_email != user.email:
+                user.email = new_email
+            
+            # New password logic:
+            if len(new_password1) > 0:
+                if new_password1 == new_password2:
+                    
+                    validated_pass = is_password_valid(new_password1)
+                    
+                    if validated_pass is True:
+                        user.set_password(new_password1)
+                        update_session_auth_hash(request, user)
+                        messages.info(request, 'Password changed sucesfully!' )
+                    else:
+                        output = ''.join(validated_pass)
+                        messages.info(request, output )
+                
+                else:
+                    messages.info(request, "Passwords are different" )
+                    
+
+            
             user.save()
+
             return redirect('user_account')
         
         return render(request, 'user/user_account.html')
+    
+def is_password_valid(new_password1):
+    try:
+        password_validation.validate_password(new_password1)
+        return True
+    except password_validation.ValidationError as e:
+        return str(e)

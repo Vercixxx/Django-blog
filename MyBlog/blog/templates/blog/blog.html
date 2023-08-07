@@ -236,22 +236,35 @@
         
         <!-- Adding new post section -->
         {% if user.is_authenticated %}
-        <form method="POST" action="{% url 'add_post_view' %}" class="border border-secondary-subtle p-2 rounded mb-3">
+
+        <!-- Button Add new post -->
+        <div class="d-flex justify-content-end">
+          <div class="p2">
+            <button type="button" class="btn btn-success" id="add_post_button">Add new post</button>
+          </div>
+        </div>
+
+        <form method="POST" action="{% url 'add_post_view' %}" class="border border-secondary-subtle p-2 rounded mb-3 bg-body-secondary " id="add_post_form" style="display:none">
           {% csrf_token %}
 
-          <div class="display-6 mb-2">
-            New post
+          <!-- Header -->
+          <div class="mb-2 d-flex mb-3 justify-content-between">
+            <div class="display-6 p-2">
+               New post
+            </div>
+            <button type="button" class="btn-close p-2" aria-label="Close" id="close_post_form"></button>
           </div>
 
+          <!-- content -->
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Title</span>
-            <input type="text" class="form-control" placeholder="Type title here" aria-label="Title"
+            <input type="text" class="form-control bg-body-tertiary " placeholder="Type title here" aria-label="Title"
               aria-describedby="basic-addon1" name="post_title" required>
           </div>
 
           <div class="input-group mb-2">
             <span class="input-group-text">Post content</span>
-            <textarea class="form-control" placeholder="Type content here" aria-label="With textarea"
+            <textarea class="form-control bg-body-tertiary" placeholder="Type content here" aria-label="With textarea"
               name="post_content" required></textarea>
           </div>
 
@@ -273,9 +286,9 @@
         {% endif %}
         <!-- End of checking if search bar isn't used -->
 
-        <div class="display-6 d-flex justify-content-center my-4">
+        <div class="display-6 d-flex justify-content-center my-4 fw-bolder">
           {% if searched %}
-          Results for: "{{searched}}"
+          Results for - {{searched}}
 
           {% else %}
 
@@ -315,10 +328,9 @@
           <!-- Current page number -->
           <div class="p-2 d-flex justify-content-center align-items-center">
             Page
-            <!-- test -->
+
             <input type="number" id="page_selector" value="{{posts.number}}" min="0" max="{{posts.paginator.num_pages}}" class="form-control d-inline-block p-1 bg-body mx-2 text-center" style="width: fit-content;">
             of {{posts.paginator.num_pages}}
-            <!-- test -->
 
           </div>
 
@@ -373,7 +385,7 @@
                   d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
               </svg>
               {{ post.posted_date|date:"F d, Y" }}
-              - Added by
+              - by
               <span class="border border-2 rounded p-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person"
                   viewBox="0 0 16 16">
@@ -540,9 +552,82 @@
           </p>
         </article>
         {% endfor %}
+
+
+        <!-- Pages handle -->
+        <div class="d-flex justify-content-center align-items-center mb-3 ">
+
+          <!-- previous page if exist -->
+          {% if posts.has_previous %}
+          <div class="p-2 d-flex justify-content-center gap-1 ">
+            <a href="?page=1" class="btn btn-outline-secondary ">
+              First page
+            </a>
+            <a href="?page={{ posts.previous_page_number }}" class="btn btn-outline-secondary">
+              &laquo;
+            </a>
+          </div>
+
+          {% else %}
+          <div class="p-2 d-flex justify-content-center gap-1">
+            <a class="btn btn-outline-secondary disabled">
+
+              First page
+            </a>
+            <a class="btn btn-outline-secondary disabled">
+              &laquo;
+            </a>
+          </div>
+          {% endif %}
+
+          <!-- Current page number -->
+          <div class="p-2 d-flex justify-content-center align-items-center">
+            Page
+            
+            <input type="number" id="page_selector" value="{{posts.number}}" min="0" max="{{posts.paginator.num_pages}}" class="form-control d-inline-block p-1 bg-body mx-2 text-center" style="width: fit-content;">
+            of {{posts.paginator.num_pages}}
+
+          </div>
+
+          <!-- next page if exist -->
+          {% if posts.has_next %}
+          <div class="p-2 d-flex justify-content-center gap-1">
+            <a href="?page={{ posts.next_page_number }}" class="btn btn-outline-secondary">
+              &raquo;
+            </a>
+            <a href="?page={{ posts.paginator.num_pages }}" class="btn btn-outline-secondary">
+              Last page
+
+            </a>
+          </div>
+          {% else %}
+
+          <div class="p-2 d-flex justify-content-center gap-1">
+            <a class="btn btn-outline-secondary disabled">
+              &raquo;
+            </a>
+            <a class="btn btn-outline-secondary disabled">
+              Last page
+            </a>
+          </div>
+
+          {% endif %}
+
+
+        </div>
+        <!-- END of pages handle -->
+
+
+
+
+
+
+
       </div>
 
 
+
+      
       <!-- Legend of posts -->
       <div class="col-4">
         <div class="container">
@@ -582,6 +667,7 @@
     </div>
 
 
+    
 
   </div>
 
@@ -658,9 +744,7 @@
   }
 
 
-  //paginator
-
-
+//paginator
 document.getElementById("page_selector").addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
     const page_selectorValue = document.getElementById("page_selector").value;
@@ -669,7 +753,22 @@ document.getElementById("page_selector").addEventListener("keypress", function(e
   }
 });
 
- 
+// Add new post logic
+const addPostButton = document.getElementById("add_post_button");
+const addPostForm = document.getElementById("add_post_form");
+const closePostFormButton = document.getElementById("close_post_form");
+
+// Obsługa kliknięcia przycisku "Add Post"
+addPostButton.addEventListener("click", function() {
+  addPostButton.style.display = "none"; // Ukrywamy przycisk "Add Post"
+  addPostForm.style.display = "block"; // Wyświetlamy formularz
+});
+
+// Obsługa kliknięcia przycisku "Close"
+closePostFormButton.addEventListener("click", function() {
+  addPostButton.style.display = "block"; // Wyświetlamy przycisk "Add Post" z powrotem
+  addPostForm.style.display = "none"; // Ukrywamy formularz
+});
 
 </script>
 {% endblock %}
