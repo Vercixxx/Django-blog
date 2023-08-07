@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+# My imports
+# secret_data
+from users.import_data import json_data
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -67,7 +72,7 @@ ROOT_URLCONF = 'MyBlog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'MyBlog', 'blog', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -158,3 +163,15 @@ RECAPTCHA_PRIVATE_KEY = '6Le6nIknAAAAANYOZ4WHvKcU7KfxX4SiKpjObUrK'
 RECAPTCHA_REQUIRED_SCORE = 0.85
 # LOCAL DEVELOPMENT (DELETE IT BEFORE PRODUCTION)\
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
+
+# Email system
+EMAIL_BACKEND = json_data['email_backend']
+EMAIL_HOST = json_data['email_host']
+EMAIL_FROM = json_data['email_from']
+EMAIL_HOST_USER = json_data['email_host_user']
+EMAIL_HOST_PASSWORD = json_data['email_host_password']
+EMAIL_PORT = json_data['email_port']
+EMAIL_USE_TLS = True
+
+PASSWORD_RESET_TIMEOUT = 14400

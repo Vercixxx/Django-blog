@@ -30,6 +30,10 @@ urlpatterns = [
     # my sites
     path('', blog_views.home_view, name='home_view'),
     path('register/', users_views.register_view, name='register_view'),
+    
+    # mail when register
+    path('activate/<uibd64>/<token>', users_views.activate_account, name='activate_account'),
+    
     path('login/', users_views.login_view, name='login_view'),
     path('logout_user', users_views.logout_user, name="logout_user"),
     path('user/', users_views.user_account, name="user_account"),    
