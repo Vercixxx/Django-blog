@@ -27,6 +27,14 @@ from .tokens import account_activation_token, recover_password_token
 from django.urls import reverse
 
 
+# UserPosts models
+from posts.models import Post 
+from posts.models import PostsThumbs 
+from comments.models import Comment 
+
+# DB
+from django.db.models import Q
+
 def user_not_authenticated(view_func):
     @wraps(view_func)
     def wrapped_view(request, *args, **kwargs):
@@ -78,6 +86,7 @@ def account_activation_message(request, user, to_mail):
         mesasge = f"An error occured when sending email to <b>{to_mail}</b>, check if you typed correct email."
         return messages.error(request, mark_safe(message))
  
+ 
 def update_password(request):
     
     if request.method == 'POST':
@@ -95,7 +104,6 @@ def update_password(request):
             
             if validated_pass:
                 user.set_password(new_password1)
-                update_session_auth_hash(request, user)
                 messages.info(request, 'Password changed sucesfully!' )
                 user.save()
                 
@@ -144,8 +152,6 @@ def password_recovery(request, uibd64, token):
         return redirect('login_view')
     
 
-    
- 
 def password_recovery_message(request, user, to_mail):
     mail_subject = "Password recovery"
 
@@ -266,58 +272,61 @@ def logout_user(request):
  
 @login_required(login_url='/user/login.html')
 def user_account(request):
+    if request.method == 'POST':
+        user = request.user
+        new_username = request.POST.get("username")
+        new_email = request.POST.get('email')
+        new_password1 = request.POST.get("password1")
+        new_password2 = request.POST.get("password2")
 
-    if not request.user.is_authenticated:
-        messages.info(request, 'Access denied, log in first!')
-        return redirect('login_view')
-    
+        # check if username is unique
+        if new_username and new_username != user.username:
+            if User.objects.filter(username=new_username).exists():
+                context = {
+                    'error_message': 'Username already exists!',
+                }
+            else:
+                user.username = new_username
+                context = {
+                    'success_message': 'Username changed!',
+                }
+
+        # Setting new email
+        if new_email and new_email != user.email:
+            user.email = new_email
+            context = {
+                'success_message': 'Email changed!',
+            }
+
+        # New password logic
+        if new_password1:
+            if new_password1 == new_password2:
+                validated_pass = is_password_valid(new_password1)
+                if validated_pass is True:
+                    user.set_password(new_password1)
+                    context = {
+                        'success_message': 'Password changed successfully!',
+                    }
+                else:
+                    context = {
+                        'error_message': ''.join(validated_pass),
+                    }
+            else:
+                context = {
+                    'error_message': "Passwords are different",
+                }
+
+        user.save()
+
+        return render(request, 'user/user_account.html', context)
+
     else:
-        if request.method == 'POST':
-            user_id = request.user.id
-            
-            new_username = request.POST["username"]
-            new_email = request.POST['email']
-            new_password1 = request.POST["password1"]
-            new_password2 = request.POST["password2"]
-            
-            user = User.objects.get(id=user_id)
-            
-            # check if username is unique
-            if new_username != user.username:
-                if User.objects.filter(username=new_username).exists():
-                    messages.info(request, 'Username already exist!')
-                else:
-                    user.username = new_username
-            
-
-            # Setting new email
-            if new_email != user.email:
-                user.email = new_email
-            
-            # New password logic:
-            if len(new_password1) > 0:
-                if new_password1 == new_password2:
-                    
-                    validated_pass = is_password_valid(new_password1)
-                    
-                    if validated_pass is True:
-                        user.set_password(new_password1)
-                        update_session_auth_hash(request, user)
-                        messages.info(request, 'Password changed sucesfully!' )
-                    else:
-                        output = ''.join(validated_pass)
-                        messages.info(request, output )
-                
-                else:
-                    messages.info(request, "Passwords are different" )
-                    
-
-            
-            user.save()
-
-            return redirect('user_account')
-        
-        return render(request, 'user/user_account.html')
+        user_id = request.user.id
+        posts = Post.objects.filter(author_id=user_id).order_by('-posted_date')
+        data = {
+            'posts': posts
+        }
+        return render(request, 'user/user_account.html', data)
     
 def is_password_valid(new_password1):
     try:
