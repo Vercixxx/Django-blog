@@ -34,6 +34,10 @@ urlpatterns = [
     # mail when register
     path('activate/<uibd64>/<token>', users_views.activate_account, name='activate_account'),
     
+    # Password recovery
+    path('password_recovery/<uibd64>/<token>', users_views.password_recovery, name='password_recovery'),
+    path('update_password/', users_views.update_password, name='update_password'),
+    
     path('login/', users_views.login_view, name='login_view'),
     path('logout_user', users_views.logout_user, name="logout_user"),
     path('user/', users_views.user_account, name="user_account"),    
