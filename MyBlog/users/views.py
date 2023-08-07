@@ -8,6 +8,10 @@ from django.contrib.auth import password_validation, update_session_auth_hash
 from django.contrib.auth.models import User
 from .forms import RegisterForm
 
+# Captcha
+from .forms import LoginForm
+
+
 
 def register_view(request):
 
@@ -44,21 +48,40 @@ def register_view(request):
 
 
 def login_view(request):
+    lf = LoginForm(request.POST)
+    
+    output_data = {
+        'captcha':lf,
+        }
+            
     if request.method == 'POST':
-        
-        username = request.POST["username"]
-        password = request.POST["password"]
-        
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('home_view')
+        # if Captcha is valid
+        if lf.is_valid():
+            
+            # Logging logic ========================
+            username = request.POST["username"]
+            password = request.POST["password"]
+            
+            user = authenticate(request, username=username, password=password)
+            
+            
+            if user is not None:
+                login(request, user)
+                return redirect('home_view')
+            else:
+                messages.info(request, "Wrong username or password")
+                return redirect('login_view')
+            # Logging logic ========================
+            
+            
         else:
-            messages.info(request, "Wrong username or password")
+            # If captcha not vaild
+            messages.info(request, 'Captcha error, try again')
             return redirect('login_view')
+        
+    
     else:
-        return render(request, 'user/login.html')
+        return render(request, 'user/login.html', output_data)
     
     
 def logout_user(request):

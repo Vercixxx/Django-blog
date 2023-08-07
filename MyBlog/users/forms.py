@@ -1,6 +1,10 @@
 from django import forms
 from django.contrib.auth.models import User
 
+# Recaptcha
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3
+
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=10, min_length=4, required=True)
     email = forms.EmailField(required=False, help_text="Not required, used for password recovery")
@@ -21,3 +25,7 @@ class RegisterForm(forms.Form):
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError("Username already exists.")
         return username
+    
+    
+class LoginForm(forms.Form):
+    captcha = ReCaptchaField(widget=ReCaptchaV3)

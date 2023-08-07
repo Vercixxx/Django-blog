@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-3#a1v81dwrg7jketq*0590x9++miyws#lwj)e5d=wl!%u^xgk-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     # Crispy bootstrap5
     "crispy_forms",
     "crispy_bootstrap5",
+    
+    #Captcha 
+    "captcha",
 ]
 
 MIDDLEWARE = [
@@ -146,3 +149,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# Recaptcha
+RECAPTCHA_PUBLIC_KEY = '6Le6nIknAAAAADWteU2VQBdLmnyV9vI0gjVYeRQS'
+RECAPTCHA_PRIVATE_KEY = '6Le6nIknAAAAANYOZ4WHvKcU7KfxX4SiKpjObUrK'
+
+RECAPTCHA_REQUIRED_SCORE = 0.85
+# LOCAL DEVELOPMENT (DELETE IT BEFORE PRODUCTION)\
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
