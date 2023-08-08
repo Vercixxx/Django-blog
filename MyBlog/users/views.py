@@ -30,10 +30,13 @@ from django.urls import reverse
 # UserPosts models
 from posts.models import Post 
 from posts.models import PostsThumbs 
-from comments.models import Comment 
+from comments.models import Comment
+from django.utils import timezone
+from datetime import datetime
 
 # DB
 from django.db.models import Q
+
 
 def user_not_authenticated(view_func):
     @wraps(view_func)
@@ -272,6 +275,18 @@ def logout_user(request):
  
 @login_required(login_url='/user/login.html')
 def user_account(request):
+    user_id = request.user.id
+    
+    posts = Post.objects.filter(author_id=user_id).order_by('-posted_date')
+    data = {
+        'posts': posts, 
+        'Comments':Comment, 
+        'timezone':timezone, 
+        'datetime':datetime,
+        'thumbs':PostsThumbs,
+    }
+    
+    
     if request.method == 'POST':
         user = request.user
         new_username = request.POST.get("username")
@@ -282,50 +297,39 @@ def user_account(request):
         # check if username is unique
         if new_username and new_username != user.username:
             if User.objects.filter(username=new_username).exists():
-                context = {
-                    'error_message': 'Username already exists!',
-                }
+                messages.info(request, 'Username already exist!')
             else:
                 user.username = new_username
-                context = {
-                    'success_message': 'Username changed!',
-                }
+                messages.success(request, 'Username changed!')
 
         # Setting new email
         if new_email and new_email != user.email:
+            messages.success(request, 'Email changed!')
             user.email = new_email
-            context = {
-                'success_message': 'Email changed!',
-            }
 
         # New password logic
-        if new_password1:
+        if len(new_password1) > 0:
+            
             if new_password1 == new_password2:
                 validated_pass = is_password_valid(new_password1)
-                if validated_pass is True:
+                
+                if validated_pass:
                     user.set_password(new_password1)
-                    context = {
-                        'success_message': 'Password changed successfully!',
-                    }
+                    update_session_auth_hash(request, user)
+                    messages.info(request, 'Password changed sucesfully!' )
+                    
                 else:
-                    context = {
-                        'error_message': ''.join(validated_pass),
-                    }
+                    output = ''.join(validated_pass)
+                    messages.info(request, output )
+                    
             else:
-                context = {
-                    'error_message': "Passwords are different",
-                }
+                messages.info(request, "Passwords are different" )
 
         user.save()
 
-        return render(request, 'user/user_account.html', context)
+        return render(request, 'user/user_account.html', data)
 
     else:
-        user_id = request.user.id
-        posts = Post.objects.filter(author_id=user_id).order_by('-posted_date')
-        data = {
-            'posts': posts
-        }
         return render(request, 'user/user_account.html', data)
     
 def is_password_valid(new_password1):

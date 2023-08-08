@@ -117,6 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Logging 
 LOGIN_URL = '/user/login.html'
 
