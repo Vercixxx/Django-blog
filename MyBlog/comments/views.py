@@ -32,3 +32,20 @@ def add_comment(request, post_id):
         raise Http404('Access denied: You must be logged in to add a comment.')
 
     return redirect(referer)
+
+
+# Deleting comments
+def delete_comment(request, comment_id):
+    referer = request.META.get('HTTP_REFERER')
+    
+    if request.user.is_authenticated:
+        try:
+            comment = Comment.objects.get(id = comment_id)
+            comment.delete()
+        except:
+           raise Http404('Comment does not exist.') 
+        
+    else:
+        raise Http404('Access denied: You must be logged in to delete a comment.')
+
+    return redirect(referer)

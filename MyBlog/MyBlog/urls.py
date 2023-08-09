@@ -51,6 +51,9 @@ urlpatterns = [
 
     # Adding comment to post
     path('add_comment/<int:post_id>/', comments_views.add_comment, name='add_comment'),
+    
+    # Deleting comment
+    path('delete_comment/<int:comment_id>/', comments_views.delete_comment, name='delete_comment'),
 
     
     # Post likes / disklikes
