@@ -46,7 +46,7 @@ def get_comments_for_post(post_id):
 
 
 # Likes and dislikes handle
-
+@login_required(login_url='/user/login.html')
 def like_clicked(request):
     if request.method == 'POST':
         post_id = request.POST.get('post_id')
@@ -110,6 +110,7 @@ def like_clicked(request):
         
     return HttpResponse()
 
+@login_required(login_url='/user/login.html')
 def dislike_clicked(request):
     if request.method == 'POST':
         post_id = request.POST.get('post_id')
@@ -191,7 +192,7 @@ def add_post_view(request):
 
     return render(request, 'blog/blog.html')
 
-
+@login_required(login_url='/user/login.html')
 def delete_post_view(request, post_id):
     if request.method == 'POST':
         post = get_object_or_404(Post, id=post_id)
@@ -200,7 +201,7 @@ def delete_post_view(request, post_id):
         return redirect('home_view')
     return redirect('home_view')
 
-
+@login_required(login_url='/user/login.html')
 def save_post(request, post_id):
     if request.method == 'POST':
         post = get_object_or_404(Post, id=post_id)

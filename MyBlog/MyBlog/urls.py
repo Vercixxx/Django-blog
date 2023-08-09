@@ -40,7 +40,7 @@ urlpatterns = [
     
     path('login/', users_views.login_view, name='login_view'),
     path('logout_user', users_views.logout_user, name="logout_user"),
-    path('user/', users_views.user_account, name="user_account"),    
+    path('user/<str:username>/', users_views.user_account, name="user_account"),    
     
     # post
     path('post/<int:post_id>/', posts_views.post_view, name="post_view"),   

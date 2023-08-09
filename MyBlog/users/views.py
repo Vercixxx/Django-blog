@@ -119,7 +119,6 @@ def update_password(request):
                 messages.info(request, output )
 
                    
-        
         else:
             messages.info(request, "Passwords are different" )
             return redirect(previous_url)
@@ -273,12 +272,15 @@ def logout_user(request):
     return redirect('home_view')
  
  
-@login_required(login_url='/user/login.html')
-def user_account(request):
-    user_id = request.user.id
+# @login_required(login_url='/user/login.html')
+def user_account(request, username):
+    user = User.objects.get(username=username)
+    user_id = user.id
     
     posts = Post.objects.filter(author_id=user_id).order_by('-posted_date')
+    
     data = {
+        'user': user,
         'posts': posts, 
         'Comments':Comment, 
         'timezone':timezone, 
@@ -308,7 +310,7 @@ def user_account(request):
             user.email = new_email
 
         # New password logic
-        if len(new_password1) > 0:
+        if new_password1:
             
             if new_password1 == new_password2:
                 validated_pass = is_password_valid(new_password1)
@@ -327,10 +329,11 @@ def user_account(request):
 
         user.save()
 
-        return render(request, 'user/user_account.html', data)
+        return redirect('user_account', username=new_username)
 
     else:
         return render(request, 'user/user_account.html', data)
+    
     
 def is_password_valid(new_password1):
     try:
