@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.urls import reverse
 
@@ -19,6 +19,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 
+
 def post_view(request, post_id):
     
     post = get_object_or_404(Post, id=post_id)
@@ -36,7 +37,6 @@ def post_view(request, post_id):
 
     }
     return render(request, 'post/post.html', output)
-
 
 
 def get_comments_for_post(post_id):

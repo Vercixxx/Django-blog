@@ -20,6 +20,7 @@ from django.urls import path
 from blog import views as blog_views
 from users import views as users_views
 from posts import views as posts_views
+from comments import views as comments_views
 from cv import views as cv_views
 
 app_name = 'blog'
@@ -47,6 +48,9 @@ urlpatterns = [
     path('add_post/', posts_views.add_post_view, name='add_post_view'),
     path('delete_post/<int:post_id>/', posts_views.delete_post_view, name='delete_post_view'),
     path('save_post/<int:post_id>/', posts_views.save_post, name='save_post'),
+
+    # Adding comment to post
+    path('add_comment/<int:post_id>/', comments_views.add_comment, name='add_comment'),
 
     
     # Post likes / disklikes
