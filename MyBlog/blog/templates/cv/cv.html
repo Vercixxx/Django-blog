@@ -42,7 +42,7 @@
 
     <div class="row">
       <div class="col">
-        <button class="btn btn-sm btn-outline-secondary fs-6 mx-2" onclick="window.location.href = '{% url 'user_account' %}'">
+        <button class="btn btn-sm btn-outline-secondary fs-6 mx-2" onclick="window.location.href = '{% url 'user_account'  user.username %}'">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
             <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
             <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
@@ -100,15 +100,18 @@
 
 
 <main class="container min-vh-100">
-  <div class="row d-flex justify-content-evenly p-3 bg-body-tertiary mb-4  rounded" >
+  <div class="row d-flex justify-content-evenly p-3 mb-4  rounded" >
     <div class="col-4 block-scale p-5">
       <img src="{% static 'images/me.jpg' %}" class="img-fluid rounded-top " alt="my_photo">
     </div>
 
-    <div class="col-md-5 lead fw-normal d-flex justify-content-center align-items-center  p-lg-1 block-scale">
+    <div class="col-md-5 lead fw-normal d-flex justify-content-center align-items-center p-lg-1 block-scale ">
+      <span class="bg-body-tertiary p-2 rounded">
+
         Hi! My name is Krzysztof Służałek and I am Python developer. I live in Poland, in Silesian voivodeship and currently 
         I am studying applied information technology at Silesian University in Katowice. As a person without comercial experience, I am
         working by myself with projects that cames into my mind.
+      </span>
       
     </div>
   </div>
