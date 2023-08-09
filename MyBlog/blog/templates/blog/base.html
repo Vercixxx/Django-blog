@@ -91,6 +91,45 @@
     </svg>
 
 
+    <!-- Button contact me -->
+    <button type="button" class="btn btn-outline-info position-fixed bottom-0 end-0 mb-3 mt-1 me-3 bd-mode-toggle" data-bs-toggle="modal" data-bs-target="#contact_me_modal">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-plus" viewBox="0 0 16 16">
+        <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2H2Zm3.708 6.208L1 11.105V5.383l4.708 2.825ZM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2-7-4.2Z"/>
+        <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
+      </svg>
+      Contact me
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="contact_me_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Contact me</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="post" id="contact_me_form">
+              {% csrf_token %}
+              <div class="input-group mb-2">
+                <span class="input-group-text">Name</span>
+                <input type="text" name="contact_me_form_name" id="contact_me_form_name" class="form-control" required>
+              </div>
+              <div class="input-group mb-2">
+                <span class="input-group-text">Message</span>
+                <textarea class="form-control" placeholder="Type message here" aria-label="With textarea"
+                  name="contact_me_form_content" id="contact_me_form_content" required></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="send-message-contact-me-btn">Send message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 {% block content %}
 
 
@@ -109,6 +148,39 @@
 
 {% block scripts %}
 {% endblock %}
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('send-message-contact-me-btn').addEventListener('click', function() {
+      var name = document.getElementById('contact_me_form_name').value;
+      var content = document.getElementById('contact_me_form_content').value;
+
+      fetch("{% url 'contact_me_message' %}", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({
+          name: name,
+          content: content
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const closeButton = document.querySelector(".modal button[data-bs-dismiss='modal']");
+          closeButton.click();
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+    });
+  });
+</script>
 
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'js/my_scripts.js' %}"></script>

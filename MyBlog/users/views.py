@@ -271,8 +271,7 @@ def logout_user(request):
     messages.info(request, "Sucesfully logged out")
     return redirect('home_view')
  
- 
-# @login_required(login_url='/user/login.html')
+
 def user_account(request, username):
     user = User.objects.get(username=username)
     user_id = user.id

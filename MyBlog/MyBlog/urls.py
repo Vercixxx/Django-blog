@@ -64,6 +64,9 @@ urlpatterns = [
     # CV
     path('cv/', cv_views.cv_view, name='cv_view'),
     
+    # Contact me
+    path('contact_me_message/', cv_views.contact_me_message, name='contact_me_message'),
+    
     
 ]
 
