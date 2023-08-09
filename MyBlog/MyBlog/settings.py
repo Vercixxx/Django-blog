@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+# My imports
+# secret_data
+from users.import_data import json_data
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +30,7 @@ SECRET_KEY = 'django-insecure-3#a1v81dwrg7jketq*0590x9++miyws#lwj)e5d=wl!%u^xgk-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -47,6 +52,9 @@ INSTALLED_APPS = [
     # Crispy bootstrap5
     "crispy_forms",
     "crispy_bootstrap5",
+    
+    #Captcha 
+    "captcha",
 ]
 
 MIDDLEWARE = [
@@ -64,7 +72,7 @@ ROOT_URLCONF = 'MyBlog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'MyBlog', 'blog', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -109,6 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Logging 
 LOGIN_URL = '/user/login.html'
 
@@ -117,6 +126,10 @@ ESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Auto logging off after 1 hour
 SESSION_COOKIE_AGE = 3600
+
+# Session
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -146,3 +159,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Crispy forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+
+# Recaptcha
+RECAPTCHA_PUBLIC_KEY = '6Le6nIknAAAAADWteU2VQBdLmnyV9vI0gjVYeRQS'
+RECAPTCHA_PRIVATE_KEY = '6Le6nIknAAAAANYOZ4WHvKcU7KfxX4SiKpjObUrK'
+
+RECAPTCHA_REQUIRED_SCORE = 0.85
+# LOCAL DEVELOPMENT (DELETE IT BEFORE PRODUCTION)\
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+
+
+# Email system
+EMAIL_BACKEND = json_data['email_backend']
+EMAIL_HOST = json_data['email_host']
+EMAIL_FROM = json_data['email_from']
+EMAIL_HOST_USER = json_data['email_host_user']
+EMAIL_HOST_PASSWORD = json_data['email_host_password']
+EMAIL_PORT = json_data['email_port']
+EMAIL_USE_TLS = True
+
+PASSWORD_RESET_TIMEOUT = 14400

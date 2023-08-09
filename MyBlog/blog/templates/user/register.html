@@ -1,6 +1,13 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
+
+{% block head %}
+<meta name="description" content="">
+<title>Register</title>
+{% endblock %}
+
+
 {% block content %}
 
 
@@ -58,7 +65,7 @@
                 </div>
                 <!-- Input form for email -->
                 <div class="col-10 form-floating d-flex justify-content-center align-items-center">
-                  <input type="email" class="form-control" name="email" placeholder="email">
+                  <input type="email" class="form-control" name="email" placeholder="email" required>
                   <label for="email" class="text-center">Email</label>
                 </div>
               </div>
@@ -118,6 +125,11 @@
               </div>
             </div>
     
+            <!-- Captcha -->
+            <div style="display: none;">
+              {{form.captcha}}
+            </div>
+
           </form>
         </div>
     
