@@ -1,5 +1,7 @@
 from django import forms
-from django.contrib.auth.models import User
+
+from django.contrib.auth.forms import UserChangeForm
+from .models import MyUser
 
 # Recaptcha
 from captcha.fields import ReCaptchaField
@@ -44,7 +46,14 @@ class RegisterForm(forms.Form):
         if User.objects.filter(username=username).exists():
             raise forms.ValidationError("Username already exists.")
         return username
-    
-    
+      
 class LoginForm(forms.Form):
     captcha = ReCaptchaField(widget=ReCaptchaV3)
+    
+class UserAdminConf(UserChangeForm):
+    
+    new_password = forms.CharField(label='Set new password', widget=forms.PasswordInput, required=False)
+
+    class Meta:
+        model = MyUser
+        fields = ['username', 'new_password', 'last_name', 'email', 'first_name' ,  'profile_pic',  'is_active', 'date_joined'] 
