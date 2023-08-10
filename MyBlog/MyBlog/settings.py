@@ -36,18 +36,11 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    
     # My apps:
+    'users',
     'posts',
     'comments',
     'blog.apps.BlogConfig',
-    'users.apps.UsersConfig',
     
     # Crispy bootstrap5
     "crispy_forms",
@@ -55,6 +48,14 @@ INSTALLED_APPS = [
     
     #Captcha 
     "captcha",
+    
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    
 ]
 
 MIDDLEWARE = [
@@ -116,6 +117,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# User
+AUTH_USER_MODEL = 'users.MyUser'
 
 
 # Logging 

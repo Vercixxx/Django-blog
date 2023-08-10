@@ -8,7 +8,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import password_validation, update_session_auth_hash
-from django.contrib.auth.models import User
 from .forms import RegisterForm
 
 # Captcha
@@ -91,6 +90,7 @@ def account_activation_message(request, user, to_mail):
  
  
 def update_password(request):
+    User = get_user_model()
     
     if request.method == 'POST':
         previous_url = request.POST.get('previous_url')
@@ -179,7 +179,8 @@ def password_recovery_message(request, user, to_mail):
     
 @user_not_authenticated
 def register_view(request):
-
+    User = get_user_model()
+    
     if request.method == 'POST':
         form = RegisterForm(request.POST)
 
@@ -216,6 +217,7 @@ def register_view(request):
 
 @user_not_authenticated
 def login_view(request):
+    User = get_user_model()
     lf = LoginForm(request.POST)
     
     output_data = {
@@ -273,6 +275,7 @@ def logout_user(request):
  
 
 def user_account(request, username):
+    User = get_user_model()
     user = User.objects.get(username=username)
     user_id = user.id
     
