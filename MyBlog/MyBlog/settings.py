@@ -153,6 +153,11 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
+# Media
+MEDIA_URL = '/images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -184,3 +189,4 @@ EMAIL_PORT = json_data['email_port']
 EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
+

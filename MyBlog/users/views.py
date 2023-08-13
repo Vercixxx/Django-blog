@@ -281,9 +281,13 @@ def user_account(request, username):
     
     posts = Post.objects.filter(author_id=user_id).order_by('-posted_date')
     
+    # Rank color
+    bg_color = user_rank_color(user)
+    
     data = {
         'user': user,
         'posts': posts, 
+        'bg_color': bg_color,
         'Comments':Comment, 
         'timezone':timezone, 
         'datetime':datetime,
@@ -343,3 +347,28 @@ def is_password_valid(new_password1):
         return True
     except password_validation.ValidationError as e:
         return str(e)
+    
+def user_rank_color(user):
+        
+    def rank_colors(rank):
+        colors = {
+            'Newbie': 'grey',
+            'Junior': 'blue',
+            'Member': 'cyan',
+            'SeniorMember': 'green',
+            'Veteran': 'black',
+            'Expert': 'purple',
+            'Guru': 'brown',
+            'Moderator': 'orange',
+            'Administrator': 'red'
+        }
+        
+        
+        default_color = 'lightblue'
+        color = colors.get(rank, default_color)
+        return color
+    
+    bg_color = rank_colors(user.user_rank)
+     
+    return bg_color
+    

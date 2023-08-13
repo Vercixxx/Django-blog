@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from blog import views as blog_views
 from users import views as users_views
 from posts import views as posts_views
@@ -42,6 +45,7 @@ urlpatterns = [
     path('login/', users_views.login_view, name='login_view'),
     path('logout_user', users_views.logout_user, name="logout_user"),
     path('user/<str:username>/', users_views.user_account, name="user_account"),    
+
     
     # post
     path('post/<int:post_id>/', posts_views.post_view, name="post_view"),   
@@ -69,6 +73,9 @@ urlpatterns = [
     
     
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
 
 # Admin configureables
 admin.site.site_header = "Chris Admin site"
