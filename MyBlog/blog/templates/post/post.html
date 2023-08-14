@@ -25,7 +25,7 @@
         </button>
       </div>
 
-    {% if user.is_authenticated and user.id == post.author.id or user.user_rank == 'Moderator' %}
+    {% if user.is_authenticated and user.id == post.author.id or user.user_rank == 'Moderator' or user.user_rank == 'Administrator'%}
     
     <!-- Edit button -->
     <div class="p-2" id="button_edit_container">

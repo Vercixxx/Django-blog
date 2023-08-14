@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'posts',
     'comments',
     'blog.apps.BlogConfig',
+    'projects',
     
     # Crispy bootstrap5
     "crispy_forms",

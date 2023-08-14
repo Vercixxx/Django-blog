@@ -25,6 +25,7 @@ from users import views as users_views
 from posts import views as posts_views
 from comments import views as comments_views
 from cv import views as cv_views
+from projects import views as project_views
 
 app_name = 'blog'
 
@@ -71,6 +72,8 @@ urlpatterns = [
     # Contact me
     path('contact_me_message/', cv_views.contact_me_message, name='contact_me_message'),
     
+    # My projects
+    path('projects/', project_views.projects_view, name='projects_view'),
     
 ]
 
