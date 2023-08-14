@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import password_validation, update_session_auth_hash
 from .forms import RegisterForm
+from django.core.exceptions import ValidationError
 
 # Captcha
 from .forms import LoginForm
@@ -301,37 +302,53 @@ def user_account(request, username):
         new_email = request.POST.get('email')
         new_password1 = request.POST.get("password1")
         new_password2 = request.POST.get("password2")
+        new_profile_pic = request.POST.get('profile_picture')
 
         # check if username is unique
         if new_username and new_username != user.username:
             if User.objects.filter(username=new_username).exists():
-                messages.info(request, 'Username already exist!')
-            else:
+                messages.info(request, 'Username already in use, try another one!')
+                return redirect('user_account', username=username)
+            
+            elif 4 <= len(new_username) <= 10:
                 user.username = new_username
                 messages.success(request, 'Username changed!')
-
+                
+            else:
+                messages.success(request, 'Username length must be betwwen 4 and 10 characters')
+                return redirect('user_account', username=username)
+            
+            
         # Setting new email
         if new_email and new_email != user.email:
-            messages.success(request, 'Email changed!')
-            user.email = new_email
+            
+            # Check if email is unique
+            if User.objects.filter(email=new_email).exists():
+                messages.info(request, 'Email already in use, try another one')
+                return redirect('user_account', username=username)
+
+            else:
+                messages.success(request, 'Email changed!')
+                user.email = new_email
 
         # New password logic
         if new_password1:
-            
             if new_password1 == new_password2:
-                validated_pass = is_password_valid(new_password1)
-                
-                if validated_pass:
+                try:
+                    password_validation.validate_password(new_password1, user)
+                except ValidationError as e:
+                    messages.info(request, ', '.join(e))
+                else:
                     user.set_password(new_password1)
                     update_session_auth_hash(request, user)
-                    messages.info(request, 'Password changed sucesfully!' )
-                    
-                else:
-                    output = ''.join(validated_pass)
-                    messages.info(request, output )
-                    
+                    user.save()
+                    messages.info(request, 'Password changed successfully!')
             else:
-                messages.info(request, "Passwords are different" )
+                messages.info(request, "Passwords are different")
+
+        if new_profile_pic:
+            messages.success(request, 'New profile picture set')
+            user.profile_pic = new_profile_pic
 
         user.save()
 
@@ -341,11 +358,11 @@ def user_account(request, username):
         return render(request, 'user/user_account.html', data)
     
     
-def is_password_valid(new_password1):
+def is_password_valid(password):
     try:
-        password_validation.validate_password(new_password1)
+        password_validation.validate_password(password)
         return True
-    except password_validation.ValidationError as e:
+    except ValidationError as e:
         return str(e)
     
 def user_rank_color(user):
