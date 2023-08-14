@@ -191,17 +191,23 @@ def register_view(request):
             email = request.POST.get('email')
             password = request.POST.get('password1')
             
-            password2 = form.cleaned_data.get('password2')
-            if password != password2:
-                return render(request, 'user/register.html', {'form': form, 'error_message': 'Passwords do not match.'})
+            # Check if email is unique
+            if User.objects.filter(email=email).exists():
+                messages.info(request, 'Email already in use, try another one')
+                return redirect('register_view')
 
-            user = User.objects.create_user(username=username, email=email, password=password)
-            
-            # Setting account state to not active, waiting for email confirmation
-            user.is_active = False
-            user.save()
-            account_activation_message(request, user, email)
-            return redirect('home_view')
+            else:
+                password2 = form.cleaned_data.get('password2')
+                if password != password2:
+                    return render(request, 'user/register.html', {'form': form, 'error_message': 'Passwords do not match.'})
+
+                user = User.objects.create_user(username=username, email=email, password=password)
+                
+                # Setting account state to not active, waiting for email confirmation
+                user.is_active = False
+                user.save()
+                account_activation_message(request, user, email)
+                return redirect('home_view')
         
 
         else:
