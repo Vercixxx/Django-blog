@@ -238,10 +238,22 @@ def login_view(request):
             # Logging logic ========================
             username = request.POST["username"]
             password = request.POST["password"]
+
             
+            
+            try:
+                user = User.objects.get(username=username)
+                if not user.is_active:
+                    messages.info(request, "Account you are trying to log in isn't active, check your email box to activte account")
+                    return redirect('login_view')
+                
+                
+            except User.DoesNotExist:
+                messages.info(request, "Wrong username or password")
+                return redirect('login_view')
+                
+
             user = authenticate(request, username=username, password=password)
-            
-            
             if user is not None:
                 login(request, user)
                 return redirect('home_view')
