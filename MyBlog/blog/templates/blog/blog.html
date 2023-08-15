@@ -34,10 +34,19 @@
   display: none;
 }
 
-/* Profile picture */
-.profile_image {
+
+/* User profile button */
+.profile_button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  padding-top: 100%;
+
+}
+
+.profile_image {
+  width: 30%;
+  padding-top: 30%;
   position: relative;
   overflow: hidden;
   border-radius: 50%;
@@ -50,6 +59,18 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.profile_text {
+  width: 65%;
+  text-align: right;
+}
+
+.btn.profile_button {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 8px;
+  padding: 5px 8px; 
 }
 </style>
 {% endblock %}
@@ -70,9 +91,6 @@
       </div>
 
 
-    
-
-
 
       <div class="col-4 d-flex justify-content-end align-items-center">
 
@@ -83,29 +101,36 @@
         {% if user.is_authenticated %}
 
         <div class="row">
-          <div class="col">
-            <button class="btn btn-sm btn-outline-secondary fs-6 mx-2 border border-1"
-              onclick="window.location.href = '{% url 'user_account'  user.username %}'">
-
+          <div class="col-auto">
+            <button class="btn btn-sm btn-outline-secondary fs-6 mx-3 profile_button"
+            onclick="window.location.href = '{% url 'user_account'  user.username %}'">
+    
               <div class="profile_image">
-                <img class="img-fluid rounded-circle" src="{{ user.profile_pic.url }}" >
+                <img class="img-fluid rounded-circle" src="{{ user.profile_pic.url }}">
+              </div>
+            
+              <div class="profile_text">
+                {{ user.username }}
               </div>
 
-              {{user.username }}
             </button>
+          </div>
+          
+          <div class="col-auto">
+            <button type="button" class="btn btn-sm btn-outline-danger fs-6 mx-2"
+              onclick="window.location.href = '{% url 'logout_user' %}'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open"
+                viewBox="0 0 16 16">
+                <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+                <path
+                  d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z" />
+              </svg>
+              Log out
+            </button>
+
           </div>
         </div>
 
-        <button type="button" class="btn btn-sm btn-outline-danger fs-6 mx-2"
-          onclick="window.location.href = '{% url 'logout_user' %}'">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open"
-            viewBox="0 0 16 16">
-            <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
-            <path
-              d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z" />
-          </svg>
-          Log out
-        </button>
 
         {% else %}
 
@@ -394,23 +419,36 @@
           <p class="blog-post-meta">
           <div class="d-flex justify-content-between">
             <div class="p-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3"
-                viewBox="0 0 16 16">
-                <path
-                  d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
-                <path
-                  d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-              </svg>
-              {{ post.posted_date|date:"F d, Y" }}
-              - by
-                <button class="btn btn-sm btn-outline-secondary fs-6 mx-2 p-1 border-0"
-                onclick="window.location.href = '{% url 'user_account'  post.author %}'">
-                <!-- User image -->
-                <div class="profile_image">
-                  <img class="img-fluid rounded-circle" src="{{ post.author.profile_pic.url }}" >
+              <div class="row d-flex justify-content-start align-items-center">
+                <div class="col-auto">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3"
+                    viewBox="0 0 16 16">
+                    <path
+                      d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
+                    <path
+                      d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                  </svg>
+                  {{ post.posted_date|date:"F d, Y" }}
+                  - by
+
                 </div>
-                {{ post.author }}
-              </button>
+
+                <div class="col-auto">
+
+                  <button class="btn btn-sm btn-outline-secondary fs-6 mx-5 profile_button"
+                  onclick="window.location.href = '{% url 'user_account'  post.author %}'">
+                  <!-- User image -->
+  
+                  <div class="profile_image">
+                    <img class="img-fluid rounded-circle" src="{{ post.author.profile_pic.url }}">
+                  </div>
+                
+                  <div class="profile_text">
+                    {{ post.author }}
+                  </div>
+                </button>
+                </div>
+              </div>
 
             </div>
 
