@@ -17,9 +17,9 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 
 # Quotes
-# from django.conf import settings
-from django.templatetags.static import static
+from django.conf import settings
 import os
+import random
 
 
 def home_view(request): 
@@ -53,9 +53,9 @@ def home_view(request):
 
 
     # Daily thoughts
-    # dt = get_quotes()
-
-    # print(dt)
+    dt = get_quotes()
+    random_author = random.choice(list(dt.keys()))
+    random_quote = dt[random_author]
 
     data = {'posts':page_obj, 
             'all_posts':all_posts[:6], 
@@ -63,26 +63,33 @@ def home_view(request):
             'timezone':timezone, 
             'datetime':datetime,
             'thumbs':PostsThumbs,
-            'searched':searching
+            'searched':searching,
+            'quote_content':random_quote,
+            'quote_author':random_author
             }
     
     return render(request, 'blog/blog.html', data)
 
-# def read_file_to_dict(file_path):
-#     result_dict = {}
+def get_quotes():
+    path = os.path.join(settings.BASE_DIR, 'static/quotes/quotes.txt')
+    quotes_dict = {}
 
-#     with open(file_path, 'r') as file:
-#         lines = file.readlines()
+    with open(path, 'r', encoding='utf-8') as file:
+        for line in file:
+            parts = line.split('~', 1)
+            if len(parts) == 2:
+                quote_and_author = parts[0]
+                author = parts[1].strip()
+                
 
-#     for idx, line in enumerate(lines):
-#         result_dict[idx] = line.strip()
+                quote_parts = quote_and_author.split('. ', 1)
+                if len(quote_parts) == 2:
+                    _, quote = quote_parts
+                else:
+                    quote = quote_parts[0]
+                
+                quote = quote.strip()
+                quotes_dict[author] = quote
 
-#     return result_dict
+    return quotes_dict
 
-# def get_quotes():
-#     path = os.path.join(static('quotes/quotes.txt'))
-#     data_dict = read_file_to_dict(path)
-#     for key, value in data_dict.items():
-#         print(key, value)
-
-#     print(path)
