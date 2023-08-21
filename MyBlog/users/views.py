@@ -383,6 +383,7 @@ def is_password_valid(password):
     except ValidationError as e:
         return str(e)
     
+    
 def user_rank_color(user):
         
     def rank_colors(rank):

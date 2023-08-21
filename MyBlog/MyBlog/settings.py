@@ -42,10 +42,7 @@ INSTALLED_APPS = [
     'comments',
     'blog.apps.BlogConfig',
     'projects',
-    
-    # Crispy bootstrap5
-    "crispy_forms",
-    "crispy_bootstrap5",
+
     
     #Captcha 
     "captcha",
@@ -74,7 +71,9 @@ ROOT_URLCONF = 'MyBlog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'MyBlog', 'blog', 'templates')],
+        'DIRS': [
+                    os.path.join(BASE_DIR, 'static/templates'),
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,7 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # User
 AUTH_USER_MODEL = 'users.MyUser'
 
-
 # Logging 
 LOGIN_URL = '/user/login.html'
 
@@ -151,12 +149,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+    # os.path.join(BASE_DIR, 'myapp', 'static')
+]
 
 
-# Media
-MEDIA_URL = '/images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type
@@ -164,11 +166,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
-# Crispy forms
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 # Recaptcha

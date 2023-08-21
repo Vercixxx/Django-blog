@@ -3,12 +3,11 @@ from django.contrib.auth.models import AbstractUser
 
 class MyUser(AbstractUser):
 
-#  default='default_profile_pic.png'
     # My fields
     profile_pic = models.ImageField(null=True, 
                                     blank=True, 
-                                    upload_to="images/users_prof_img/",
-                                    default="images/users_prof_img/default_profile_pic.png")
+                                    upload_to="users_prof",
+                                    default="users_prof/default_profile_pic.png")
     user_desc = models.TextField(max_length=250, default='Default profile description')
     
     # User rank
