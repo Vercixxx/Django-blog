@@ -321,6 +321,7 @@ def user_account(request, username):
         new_password1 = request.POST.get("password1")
         new_password2 = request.POST.get("password2")
         new_profile_pic = request.POST.get('profile_picture')
+        new_user_desc = request.POST.get('user_desc')
 
         # check if username is unique
         if new_username and new_username != user.username:
@@ -367,6 +368,9 @@ def user_account(request, username):
         if new_profile_pic:
             messages.success(request, 'New profile picture set')
             user.profile_pic = new_profile_pic
+            
+        if new_user_desc is not None and new_user_desc != user.user_desc:
+            user.user_desc = new_user_desc
 
         user.save()
 

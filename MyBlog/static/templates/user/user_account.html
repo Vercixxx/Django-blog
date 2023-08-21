@@ -107,16 +107,32 @@
 <!-- Account picture and info  -->
   <div class="d-flex justify-content-between gap-0 column-gap-5 p-3 rounded bg-body-tertiary mb-4">
 
+    {% if user.is_authenticated and user == request.user %}
+
+
+    <div class="container">
+
       <div class="row">
         <div class="col-4">
           <div class="row">
             <div class="col-md-10 mb-4">
-              <div class="profile_image">
+              <div class="profile_image d-flex justify-content-center">
                 <img class="img-fluid rounded-circle" src="{{ user.profile_pic.url }}" >
               </div>
             </div>
             <div class="col-md-12 px-2">
-              {{ user.user_desc }}
+
+
+              <form method="POST" class="mx-auto mb-4">
+                {% csrf_token %}
+
+              <div class="input-group mb-2 d-flex flex-column align-items-start">
+                <label for="user_desc" class="mb-1 w-100 text-center">Profile description</label>
+                <textarea class="form-control bg-body-tertiary w-100 rounded" placeholder="Profile description" aria-label="With textarea"
+                  name="user_desc" id="user_desc">{{ user.user_desc }}</textarea>
+              </div>
+              
+              
             </div>
           </div>
         </div>
@@ -124,12 +140,6 @@
         <div class="col-8">
           <div class="row">
             <div class="col-md-12">
-
-              {% if user.is_authenticated and user == request.user %}
-
-
-              <form method="POST" class="mx-auto mb-4">
-                {% csrf_token %}
 
                 <div class="row">
 
@@ -219,27 +229,90 @@
     
               </form>
     
-              {% else %}
-              <!-- Case when user on site isn't owner of profile -->
-    
-              <div class="container">
-    
-                <p class="display-6">
-                  {{ user.username }}
-                </p>
-    
-                <p class="display-6">
-                  {{ user.email }}
-                </p>
-              </div>
-    
-    
-              {% endif %}
-
+              
             </div>
           </div>
         </div>
       </div>
+      
+    </div>
+    
+    
+    {% else %}
+    <!-- Case when user on site isn't owner of profile -->
+
+    <div class="container">
+
+      <div class="row">
+        <div class="col-4">
+          <div class="row">
+            <div class="col-md-10 mb-4">
+              <div class="profile_image d-flex justify-content-center">
+                <img class="img-fluid rounded-circle" src="{{ user.profile_pic.url }}" >
+              </div>
+            </div>
+            <div class="col-md-12 px-2">
+
+              <div class="input-group mb-2 d-flex flex-column align-items-start">
+                <label for="user_desc" class="mb-1 w-100  display-6">Profile description</label>
+                <p class="fs-5">
+                  {{ user.user_desc }}
+                </p>
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+
+        <div class="col-8">
+          <div class="row">
+            <div class="col-md-12">
+
+                <div class="row">
+
+                  <div class="row-auto">
+                    <span class="container rounded text-white" style="background-color: {{ bg_color }}">
+                      {{ user.user_rank }}
+                    </span>
+
+                  </div>
+                  <div class="row">
+
+                  <!-- Title -->
+                  <h1 class="display-5 fst-italic my-4">
+                    {{ user.username }} 
+                  </h1>
+ 
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="input-group mb-2 d-flex justify-content-start">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                      class="bi bi-envelope" viewBox="0 0 16 16">
+                      <path
+                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                    </svg>
+                  </span>
+    
+                  <input type="email" class="form-control bg-body-tertiary" name="email" value="{{ user.email }}" disabled/>
+                </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    {% endif %}
+
+
+
+
   </div>
 <!-- Account picture and info  -->
 

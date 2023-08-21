@@ -6,7 +6,7 @@ class MyUser(AbstractUser):
     # My fields
     profile_pic = models.ImageField(null=True, 
                                     blank=True, 
-                                    upload_to="users_prof",
+                                    upload_to="users_prof/",
                                     default="users_prof/default_profile_pic.png")
     user_desc = models.TextField(max_length=250, default='Default profile description')
     
