@@ -105,11 +105,7 @@ def like_clicked(request):
             # add one like to post like counter
             post.likes += 1
             post.save()
-        
-        
-        
-        print(f'Like clicked! Post ID: {post_id}, User ID: {user_id},  like: {thumb.like},  dislike: {thumb.dislike}')
-        
+ 
     return HttpResponse()
 
 @login_required(login_url='/user/login.html')
@@ -169,9 +165,7 @@ def dislike_clicked(request):
             post.dislikes += 1
             post.save()
         
-        
-    print(f'Like clicked! Post ID: {post_id}, User ID: {user_id},  like: {thumb.like},  dislike: {thumb.dislike}')
-        
+    
     return HttpResponse()
 
 

@@ -10,6 +10,7 @@
 
 {% block style %}
 <style>
+
   /* Turning off arrows in page_selector */
   #page_selector::-webkit-inner-spin-button,
   #page_selector::-webkit-outer-spin-button,
@@ -72,6 +73,39 @@
     border-radius: 8px;
     padding: 5px 8px;
   }
+
+  .custom-bg {
+        position: relative;
+        background-image: url('/static/images/daily_thoughts/mountains.jpg');
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .custom-bg::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .custom-bg > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .bg-dark1 {
+        background-color: rgba(0, 0, 0, 0.5); /* Kontrastowe tło */
+        display: inline-block;
+    }
+
+    .text-light1 {
+        color: white;
+    }
 </style>
 {% endblock %}
 
@@ -199,16 +233,10 @@
 
   <!-- Quotes setion -->
 
-  <div class="p-4 p-md-5 mb-5 rounded text-body-emphasis bg-body-secondary">
-
-    <h1 class="display-4 fst-italic">{{quote_author}}</h1>
-    <p class="lead my-3">{{quote_content}}</p>
-
-    <!-- test -->
-
-    <!-- test -->
-
-  </div>
+  <div class="p-4 p-md-5 mb-5 rounded text-body-emphasis bg-body-secondary custom-bg d-flex flex-column align-items-start">
+    <h1 class="display-4 fst-italic bg-dark1 text-light1 p-3 rounded">{{quote_author}}</h1>
+    <p class="lead my-3 bg-dark1 text-light1 p-3 rounded">{{quote_content}}</p>
+</div>
   <!-- Quotes setion -->
 
 
@@ -417,8 +445,7 @@
         <article class="blog-post border border-secondary-subtle p-2 rounded">
 
 
-            <a class="mb-1 font-monospace text-capitalize text-decoration-none text-break text-light"
-            
+            <a class="mb-1 font-monospace text-capitalize text-decoration-none text-break text-light fs-4"
             href="{% url 'post_view' post.id %}">
 
                 {{ post.title }}
