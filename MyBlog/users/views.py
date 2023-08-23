@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
 from functools import wraps
 from django.http import HttpResponse
+from django.http import JsonResponse
 
 # auth
 from django.contrib import messages
