@@ -1,0 +1,242 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% load tz %}
+
+{% block head %}
+<meta name="description" content="">
+<title>Forum</title>
+{% endblock %}
+
+
+{% block style %}
+<style>
+    /* User profile button */
+    .profile_button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+    }
+
+    .profile_image {
+        width: 30%;
+        padding-top: 30%;
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+
+    .profile_image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile_text {
+        width: 65%;
+        text-align: right;
+    }
+
+    .btn.profile_button {
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 8px;
+        padding: 5px 8px;
+    }
+
+</style>
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container">
+    <header class="border-bottom lh-1 py-3">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+
+            <div class="col-1 text-center">
+                <a class="blog-header-logo text-body-emphasis text-decoration-none" href="{% url 'cv_view' %}">
+                    Krzysztof
+                    Służałek
+                </a>
+            </div>
+
+
+
+            <div class="col-4 d-flex justify-content-end align-items-center">
+
+
+
+                <!-- Log in button / log out button-->
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+
+                <div class="row">
+                    <div class="col-auto">
+                        <button class="btn btn-sm btn-outline-secondary fs-6 mx-3 profile_button"
+                            onclick="window.location.href = '{% url 'user_account'  user.username %}'">
+
+                            <div class="profile_image">
+                                <img class="img-fluid rounded-circle" src="{{ user.profile_pic.url }}">
+                            </div>
+
+                            <div class="profile_text">
+                                {{ user.username }}
+                            </div>
+
+                        </button>
+                    </div>
+
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-sm btn-outline-danger fs-6 mx-2"
+                            onclick="window.location.href = '{% url 'logout_user' %}'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-door-open" viewBox="0 0 16 16">
+                                <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+                                <path
+                                    d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z" />
+                            </svg>
+                            Log out
+                        </button>
+
+                    </div>
+                </div>
+
+
+                {% else %}
+
+                <button type="button" class="btn btn-sm btn-outline-primary fs-6 d-flex align-items-center p-2"
+                    onclick="window.location.href = '{% url 'login_view' %}'">
+                    <span class="me-2">Log in</span>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z" />
+                        <path fill-rule="evenodd"
+                            d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+                    </svg>
+
+
+
+
+                </button>
+
+                {% endif %}
+
+
+
+
+
+            </div>
+        </div>
+    </header>
+
+
+
+
+
+    <div class="nav-scroller py-1 mb-3 border-bottom">
+        <nav class="nav nav-underline justify-content-between">
+            <a class="nav-item nav-link link-body-emphasis active" href="{% url 'home_view' %}">Forum</a>
+            <a class="nav-item nav-link link-body-emphasis" href="{% url 'cv_view' %}">CV</a>
+            <a class="nav-item nav-link link-body-emphasis disabled" href="{% url 'projects_view' %}">My projects</a>
+
+
+        </nav>
+    </div>
+</div>
+
+
+
+<main class="container">
+
+
+    {% if messages %}
+    {% for message in messages %}
+
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show " role="alert">
+        <strong>System</strong>
+        <div>
+            {{ message }}
+        </div>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+    <!-- Site content  -->
+
+    <div class="container bg-teritary vh-100">
+        <div class="row text-center d-flex justify-content-center mb-5">
+            <div class="display-4">
+                Hi, below you can see my projects 
+            </div>
+        </div>
+
+
+        <!-- Projects -->
+        {% for project in projects %}
+        <article class="border border-1 rounded fs-5 p-4 bg-body-secondary mb-5">
+                <!-- Title -->
+                <div class="row bg-body-tertiary rounded p-2 mb-2">
+                    <div class="col-1 text-center border-end border-4">
+                        Title
+                    </div>
+                    <div class="col-11">
+                        {{ project.title }}
+                    </div>
+                </div>
+                <!-- Title -->
+
+                <!-- Content -->
+                <div class="row bg-body-tertiary rounded p-2 mb-2">
+                    <div class="col-1 text-center border-end border-4">
+                        Content
+                    </div>
+                    <div class="col-11">
+                        {{ project.content }}
+                    </div>
+                </div>
+                <!-- Content -->
+
+                <!-- Progress -->
+                <div class="row bg-body-tertiary rounded p-2 mb-2">
+                    <div class="col-1 text-center border-end border-4">
+                        Status
+                    </div>
+                    <div class="col-11">
+                        <div class="progress" role="progressbar" aria-label="Project progress" aria-valuenow="{{ project.status }}" aria-valuemin="0" aria-valuemax="100" style="height: 100%">
+                            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: {{ project.status }}%">{{ project.status }}%</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Progress -->
+        </article>
+        {% endfor %}
+        <!-- Projects -->
+
+
+    </div>
+
+    <!-- Site content  -->
+
+
+
+
+
+</main>
+
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
