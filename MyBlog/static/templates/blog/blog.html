@@ -4,35 +4,74 @@
 
 {% block head %}
 <meta name="description" content="">
-<title>Blog</title>
+<title>Forum</title>
 {% endblock %}
 
 
 {% block style %}
 <style>
   /* Turning off arrows in page_selector */
-#page_selector::-webkit-inner-spin-button,
-#page_selector::-webkit-outer-spin-button,
-#page_selector::-webkit-inner-spin-button:hover,
-#page_selector::-webkit-outer-spin-button:hover {
-  -webkit-appearance: none;
-  margin: 0;
-}
+  #page_selector::-webkit-inner-spin-button,
+  #page_selector::-webkit-outer-spin-button,
+  #page_selector::-webkit-inner-spin-button:hover,
+  #page_selector::-webkit-outer-spin-button:hover {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-#page_selector::-webkit-inner-spin-button,
-#page_selector::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  appearance: none;
-}
+  #page_selector::-webkit-inner-spin-button,
+  #page_selector::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
 
-#page_selector::-moz-number-spin {
-  display: none;
-}
+  #page_selector::-moz-number-spin {
+    display: none;
+  }
 
-#page_selector::-ms-up-arrow,
-#page_selector::-ms-down-arrow {
-  display: none;
-}
+  #page_selector::-ms-up-arrow,
+  #page_selector::-ms-down-arrow {
+    display: none;
+  }
+
+
+  /* User profile button */
+  .profile_button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+  }
+
+  .profile_image {
+    width: 30%;
+    padding-top: 30%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  .profile_image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .profile_text {
+    width: 65%;
+    text-align: right;
+  }
+
+  .btn.profile_button {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8px;
+    padding: 5px 8px;
+  }
 </style>
 {% endblock %}
 
@@ -52,9 +91,6 @@
       </div>
 
 
-    
-
-
 
       <div class="col-4 d-flex justify-content-end align-items-center">
 
@@ -65,30 +101,36 @@
         {% if user.is_authenticated %}
 
         <div class="row">
-          <div class="col">
-            <button class="btn btn-sm btn-outline-secondary fs-6 mx-2"
+          <div class="col-auto">
+            <button class="btn btn-sm btn-outline-secondary fs-6 mx-3 profile_button"
               onclick="window.location.href = '{% url 'user_account'  user.username %}'">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                class="bi bi-person-circle" viewBox="0 0 16 16">
-                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                <path fill-rule="evenodd"
-                  d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-              </svg>
-              {{user.username }}
+
+              <div class="profile_image">
+                <img class="img-fluid rounded-circle" src="{{ user.profile_pic.url }}">
+              </div>
+
+              <div class="profile_text">
+                {{ user.username }}
+              </div>
+
             </button>
+          </div>
+
+          <div class="col-auto">
+            <button type="button" class="btn btn-sm btn-outline-danger fs-6 mx-2"
+              onclick="window.location.href = '{% url 'logout_user' %}'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open"
+                viewBox="0 0 16 16">
+                <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+                <path
+                  d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z" />
+              </svg>
+              Log out
+            </button>
+
           </div>
         </div>
 
-        <button type="button" class="btn btn-sm btn-outline-danger fs-6 mx-2"
-          onclick="window.location.href = '{% url 'logout_user' %}'">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open"
-            viewBox="0 0 16 16">
-            <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
-            <path
-              d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117zM11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5zM4 1.934V15h6V1.077l-6 .857z" />
-          </svg>
-          Log out
-        </button>
 
         {% else %}
 
@@ -125,10 +167,10 @@
 
   <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-between">
-      <a class="nav-item nav-link link-body-emphasis active" href="{% url 'home_view' %}">Blog</a>
+      <a class="nav-item nav-link link-body-emphasis active" href="{% url 'home_view' %}">Forum</a>
       <a class="nav-item nav-link link-body-emphasis" href="{% url 'cv_view' %}">CV</a>
-      <a class="nav-item nav-link link-body-emphasis disabled" href="#">Unicorns online</a>
-      <a class="nav-item nav-link link-body-emphasis disabled" href="#">Pirates</a>
+      <a class="nav-item nav-link link-body-emphasis disabled" href="{% url 'projects_view' %}">My projects</a>
+
 
     </nav>
   </div>
@@ -155,6 +197,23 @@
 
 
 
+  <!-- Quotes setion -->
+
+  <div class="p-4 p-md-5 mb-5 rounded text-body-emphasis bg-body-secondary">
+
+    <h1 class="display-4 fst-italic">{{quote_author}}</h1>
+    <p class="lead my-3">{{quote_content}}</p>
+
+    <!-- test -->
+
+    <!-- test -->
+
+  </div>
+  <!-- Quotes setion -->
+
+
+
+
   <!-- Search bar section -->
   <div class="text-center mb-5 d-flex justify-content-end">
 
@@ -164,34 +223,42 @@
 
 
       <div class="input-group">
-        
+
         <input class="form-control " type="search" placeholder="Search" aria-label="Search" name="search_content">
-        <button type="submit" class="btn btn-outline-success" >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-2" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        <button type="submit" class="btn btn-outline-success">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-2"
+            viewBox="0 0 16 16">
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
           </svg>
           Search
         </button>
-        <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+        <button type="button" class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+          data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
           <span class="visually-hidden">Toggle Dropdown</span>
         </button>
-        
+
         <div class="dropdown-menu">
           <li><a class="dropdown-item disabled text-center">Choose filters</a></li>
-          <li><hr class="dropdown-divider"></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
 
           <div>
-            <input type="checkbox" class="btn-check dropdown-item" id="btncheck1" name="checkbox_title" autocomplete="off" checked>
+            <input type="checkbox" class="btn-check dropdown-item" id="btncheck1" name="checkbox_title"
+              autocomplete="off" checked>
             <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck1">Title</label>
           </div>
 
           <div>
-            <input type="checkbox" class="btn-check dropdown-item" id="btncheck2" name="checkbox_content" autocomplete="off">
+            <input type="checkbox" class="btn-check dropdown-item" id="btncheck2" name="checkbox_content"
+              autocomplete="off">
             <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck2">Content</label>
           </div>
 
           <div>
-            <input type="checkbox" class="btn-check dropdown-item" id="btncheck3" name="checkbox_users" autocomplete="off">
+            <input type="checkbox" class="btn-check dropdown-item" id="btncheck3" name="checkbox_users"
+              autocomplete="off">
             <label class="btn btn-outline-secondary w-100 rounded-0 border-0" for="btncheck3">User</label>
           </div>
 
@@ -201,39 +268,18 @@
     </form>
 
   </div>
-  
+
   <!-- End of search bar section -->
-
-
-
-
-
-
-
-
-
-
-  <div class="p-4 p-md-5 mb-5 rounded text-body-emphasis bg-body-secondary" style="background-image: url('{% static "images/mountains.jpg" %}'); background-size: cover; background-position: center; filter: brightness(90%);">
-
-    <h1 class="display-4 fst-italic">― Madonna</h1>
-    <p class="lead my-3">“No matter who you are, no matter what you did, no matter where you've come from, you can
-      always change, become a better version of yourself.”</p>
-
-  </div>
-
-
-
-
 
 
   <!-- Posts section -->
   <div class="container">
     <div class="row">
-      <div class="col">
+      <div class="col-8">
 
         <!-- Checking if search bar isn't used -->
         {% if not searched %}
-        
+
         <!-- Adding new post section -->
         {% if user.is_authenticated %}
 
@@ -244,13 +290,15 @@
           </div>
         </div>
 
-        <form method="POST" action="{% url 'add_post_view' %}" class="border border-secondary-subtle p-2 rounded mb-3 bg-body-secondary " id="add_post_form" style="display:none">
+        <form method="POST" action="{% url 'add_post_view' %}"
+          class="border border-secondary-subtle p-2 rounded mb-3 bg-body-secondary " id="add_post_form"
+          style="display:none">
           {% csrf_token %}
 
           <!-- Header -->
           <div class="mb-2 d-flex mb-3 justify-content-between">
             <div class="display-6 p-2">
-               New post
+              New post
             </div>
             <button type="button" class="btn-close p-2" aria-label="Close" id="close_post_form"></button>
           </div>
@@ -299,7 +347,6 @@
 
 
         <!-- Pages handle -->
-
         <div class="d-flex justify-content-center align-items-center mb-3 ">
 
           <!-- previous page if exist -->
@@ -329,7 +376,8 @@
           <div class="p-2 d-flex justify-content-center align-items-center">
             Page
 
-            <input type="number" id="page_selector" value="{{posts.number}}" min="0" max="{{posts.paginator.num_pages}}" class="form-control d-inline-block p-1 bg-body mx-2 text-center" style="width: fit-content;">
+            <input type="number" id="page_selector" value="{{posts.number}}" min="0" max="{{posts.paginator.num_pages}}"
+              class="form-control d-inline-block p-1 bg-body mx-2 text-center" style="width: fit-content;">
             of {{posts.paginator.num_pages}}
 
           </div>
@@ -367,34 +415,50 @@
         <!-- Articles -->
         {% for post in posts %}
         <article class="blog-post border border-secondary-subtle p-2 rounded">
-          <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+
+
+            <a class="mb-1 font-monospace text-capitalize text-decoration-none text-break text-light"
+            
             href="{% url 'post_view' post.id %}">
-            <h2 class="fs-2 link-body-emphasis mb-1">
-              {{ post.title }}
-            </h2>
-          </a>
+
+                {{ post.title }}
+
+            </a>
+
 
           <p class="blog-post-meta">
           <div class="d-flex justify-content-between">
             <div class="p-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3"
-                viewBox="0 0 16 16">
-                <path
-                  d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
-                <path
-                  d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-              </svg>
-              {{ post.posted_date|date:"F d, Y" }}
-              - by
-                <button class="btn btn-sm btn-outline-secondary fs-6 mx-2 border border-2 rounded p-1"
-                onclick="window.location.href = '{% url 'user_account'  post.author %}'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
-                </svg>
-                {{ post.author }}
-              </button>
+              <div class="row d-flex justify-content-start align-items-center">
+                <div class="col-auto">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-calendar3" viewBox="0 0 16 16">
+                    <path
+                      d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
+                    <path
+                      d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                  </svg>
+                  {{ post.posted_date|date:"F d, Y" }}
+                  - by
+
+                </div>
+
+                <div class="col-auto">
+
+                  <button class="btn btn-sm btn-outline-secondary fs-6 mx-5 profile_button"
+                    onclick="window.location.href = '{% url 'user_account'  post.author %}'">
+                    <!-- User image -->
+
+                    <div class="profile_image">
+                      <img class="img-fluid rounded-circle" src="{{ post.author.profile_pic.url }}">
+                    </div>
+
+                    <div class="profile_text">
+                      {{ post.author }}
+                    </div>
+                  </button>
+                </div>
+              </div>
 
             </div>
 
@@ -548,7 +612,7 @@
 
           <hr>
 
-          <p class="">
+          <p class="p-2 text-break">
             {{ post.content }}
           </p>
         </article>
@@ -584,8 +648,9 @@
           <!-- Current page number -->
           <div class="p-2 d-flex justify-content-center align-items-center">
             Page
-            
-            <input type="number" id="page_selector" value="{{posts.number}}" min="0" max="{{posts.paginator.num_pages}}" class="form-control d-inline-block p-1 bg-body mx-2 text-center" style="width: fit-content;">
+
+            <input type="number" id="page_selector" value="{{posts.number}}" min="0" max="{{posts.paginator.num_pages}}"
+              class="form-control d-inline-block p-1 bg-body mx-2 text-center" style="width: fit-content;">
             of {{posts.paginator.num_pages}}
 
           </div>
@@ -628,7 +693,7 @@
 
 
 
-      
+
       <!-- Legend of posts -->
       <div class="col-4">
         <div class="container">
@@ -644,18 +709,18 @@
             <!-- List of posts titles -->
             {% for post in all_posts %}
             <button type="button" class="btn btn-outline-secondary text-start mb-2 w-100 border-0"
-              onclick="window.location.href = '{% url 'post_view' post.id %}'">
-
-              <p class="fw-medium mb-1">
+            style="word-wrap: break-word;"
+            onclick="window.location.href = '{% url 'post_view' post.id %}'">
+      <p class="fw-medium mb-1">
                 {{ post.title }}
               </p>
-              
+
 
               <p class="fw-lighter">
                 Posted by {{post.author}},
                 {% with time_difference=post.posted_date|timesince:timezone.now|slice:"-6" %}
                 {{ time_difference }} ago
-              {% endwith %}
+                {% endwith %}
 
               </p>
 
@@ -668,7 +733,7 @@
     </div>
 
 
-    
+
 
   </div>
 
@@ -745,31 +810,31 @@
   }
 
 
-//paginator
-document.getElementById("page_selector").addEventListener("keypress", function(event) {
-  if (event.key === "Enter") {
-    const page_selectorValue = document.getElementById("page_selector").value;
-    const url = "?page=" + page_selectorValue;
-    window.location.href = url;
-  }
-});
+  //paginator
+  document.getElementById("page_selector").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      const page_selectorValue = document.getElementById("page_selector").value;
+      const url = "?page=" + page_selectorValue;
+      window.location.href = url;
+    }
+  });
 
-// Add new post logic
-const addPostButton = document.getElementById("add_post_button");
-const addPostForm = document.getElementById("add_post_form");
-const closePostFormButton = document.getElementById("close_post_form");
+  // Add new post logic
+  const addPostButton = document.getElementById("add_post_button");
+  const addPostForm = document.getElementById("add_post_form");
+  const closePostFormButton = document.getElementById("close_post_form");
 
-// Obsługa kliknięcia przycisku "Add Post"
-addPostButton.addEventListener("click", function() {
-  addPostButton.style.display = "none"; // Ukrywamy przycisk "Add Post"
-  addPostForm.style.display = "block"; // Wyświetlamy formularz
-});
+  // Obsługa kliknięcia przycisku "Add Post"
+  addPostButton.addEventListener("click", function () {
+    addPostButton.style.display = "none"; // Ukrywamy przycisk "Add Post"
+    addPostForm.style.display = "block"; // Wyświetlamy formularz
+  });
 
-// Obsługa kliknięcia przycisku "Close"
-closePostFormButton.addEventListener("click", function() {
-  addPostButton.style.display = "block"; // Wyświetlamy przycisk "Add Post" z powrotem
-  addPostForm.style.display = "none"; // Ukrywamy formularz
-});
+  // Obsługa kliknięcia przycisku "Close"
+  closePostFormButton.addEventListener("click", function () {
+    addPostButton.style.display = "block"; // Wyświetlamy przycisk "Add Post" z powrotem
+    addPostForm.style.display = "none"; // Ukrywamy formularz
+  });
 
 </script>
 {% endblock %}

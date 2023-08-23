@@ -1,5 +1,7 @@
 from django import forms
-from django.contrib.auth.models import User
+
+from django.contrib.auth.forms import UserChangeForm
+from .models import MyUser
 
 # Recaptcha
 from captcha.fields import ReCaptchaField
@@ -11,21 +13,6 @@ class RegisterForm(forms.Form):
     password1 = forms.CharField(widget=forms.PasswordInput, help_text="At least 8 characters", min_length=8, required=True)
     password2 = forms.CharField(widget=forms.PasswordInput, required=True)
 
-    # # User rank
-    # RANK_CHOICES = (
-    #         ('newbie', 'Newbie', 'lightblue'),
-    #         ('junior', 'Junior', 'blue'),
-    #         ('member', 'Member', 'darkblue'),
-    #         ('seniormember', 'SeniorMember', 'lightgreen'),
-    #         ('veteran', 'Veteran', 'green'),
-    #         ('expert', 'Expert', 'purple'),
-    #         ('guru', 'Guru', 'darkpurple'),
-    #         ('moderator', 'Moderator', 'orange'),
-    #         ('admin', 'Administrator', 'red'),
-    #     )
-    
-    # user_rank = forms.ChoiceField(choices=RANK_CHOICES, required=True, initial='newbie')
-    
     
     # Captcha
     captcha = ReCaptchaField(widget=ReCaptchaV3)
@@ -41,10 +28,17 @@ class RegisterForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
-        if User.objects.filter(username=username).exists():
+        if MyUser.objects.filter(username=username).exists():
             raise forms.ValidationError("Username already exists.")
         return username
-    
-    
+      
 class LoginForm(forms.Form):
     captcha = ReCaptchaField(widget=ReCaptchaV3)
+    
+class UserAdminConf(UserChangeForm):
+    
+    new_password = forms.CharField(label='Set new password', widget=forms.PasswordInput, required=False)
+
+    class Meta:
+        model = MyUser
+        fields = ['username', 'new_password', 'last_name', 'email', 'first_name' ,  'profile_pic',  'is_active', 'user_rank', 'user_desc'] 

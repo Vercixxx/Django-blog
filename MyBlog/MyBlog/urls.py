@@ -17,11 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from blog import views as blog_views
 from users import views as users_views
 from posts import views as posts_views
 from comments import views as comments_views
 from cv import views as cv_views
+from projects import views as project_views
 
 app_name = 'blog'
 
@@ -42,6 +46,7 @@ urlpatterns = [
     path('login/', users_views.login_view, name='login_view'),
     path('logout_user', users_views.logout_user, name="logout_user"),
     path('user/<str:username>/', users_views.user_account, name="user_account"),    
+
     
     # post
     path('post/<int:post_id>/', posts_views.post_view, name="post_view"),   
@@ -67,8 +72,16 @@ urlpatterns = [
     # Contact me
     path('contact_me_message/', cv_views.contact_me_message, name='contact_me_message'),
     
+    # My projects
+    path('projects/', project_views.projects_view, name='projects_view'),
     
 ]
+
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
 
 # Admin configureables
 admin.site.site_header = "Chris Admin site"

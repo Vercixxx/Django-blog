@@ -1,12 +1,12 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Post(models.Model):
     id = models.AutoField(primary_key=True)
     
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     posted_date = models.DateTimeField(default=timezone.now)
     
     title = models.TextField()
@@ -24,7 +24,7 @@ class Post(models.Model):
         
 class PostsThumbs(models.Model):
     
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE, to_field='id')
     
     like = models.BooleanField(default=False)

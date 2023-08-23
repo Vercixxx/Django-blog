@@ -36,6 +36,17 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    # My apps:
+    'users',
+    'posts',
+    'comments',
+    'blog.apps.BlogConfig',
+    'projects',
+
+    
+    #Captcha 
+    "captcha",
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,18 +54,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # My apps:
-    'posts',
-    'comments',
-    'blog.apps.BlogConfig',
-    'users.apps.UsersConfig',
-    
-    # Crispy bootstrap5
-    "crispy_forms",
-    "crispy_bootstrap5",
-    
-    #Captcha 
-    "captcha",
 ]
 
 MIDDLEWARE = [
@@ -72,7 +71,9 @@ ROOT_URLCONF = 'MyBlog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'MyBlog', 'blog', 'templates')],
+        'DIRS': [
+                    os.path.join(BASE_DIR, 'static/templates'),
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,6 +118,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# User
+AUTH_USER_MODEL = 'users.MyUser'
 
 # Logging 
 LOGIN_URL = '/user/login.html'
@@ -146,7 +149,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+    # os.path.join(BASE_DIR, 'myapp', 'static')
+]
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type
@@ -154,11 +166,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
-# Crispy forms
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 # Recaptcha
@@ -180,3 +187,4 @@ EMAIL_PORT = json_data['email_port']
 EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
+

@@ -8,6 +8,32 @@
 {% endblock %}
 
 
+{% block style %}
+
+
+<style>
+.profile_image {
+  width: 100%;
+  padding-top: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.profile_image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
+
+
+{% endblock %}
+
+
 {% block content %}
 
 
@@ -23,7 +49,7 @@
   <!-- Button trigger modal -->
 
   <!-- Modal -->
-  <div class="modal fade modal-sm" id="messages_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  <div class="modal fade" id="messages_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -78,127 +104,217 @@
   </div>
 
 
-
+<!-- Account picture and info  -->
   <div class="d-flex justify-content-between gap-0 column-gap-5 p-3 rounded bg-body-tertiary mb-4">
-    <!-- User image -->
-    <div class="p-2 display-1 rounded">
-      <svg xmlns="http://www.w3.org/2000/svg" width="250" height="250" fill="currentColor" class="bi bi-person-square"
-        viewBox="0 0 16 16">
-        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-        <path
-          d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
-      </svg>
-    </div>
 
-    <div class="p-2 flex-grow-1 rounded">
-
-      {% if user.is_authenticated and user == request.user %}
+    {% if user.is_authenticated and user == request.user %}
 
 
-      <form method="POST" class="mx-auto mb-4">
-        {% csrf_token %}
-        <!-- Title -->
-        <h1 class="display-5 fst-italic my-4">{{ user.username }}</h1>
+    <div class="container">
 
-        <!-- Username -->
-        <div class="input-group mb-2 d-flex justify-content-start">
-          <span class="input-group-text">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person"
-              viewBox="0 0 16 16">
-              <path
-                d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
-            </svg>
-          </span>
+      <div class="row">
+        <div class="col-4">
+          <div class="row">
+            <div class="col-md-10 mb-4">
+              <div class="profile_image d-flex justify-content-center">
+                <img class="img-fluid rounded-circle" src="{{ user.profile_pic.url }}" >
+              </div>
+            </div>
+            <div class="col-md-12 px-2">
 
-          <input type="text" class="form-control bg-body-tertiary" name="username" value="{{ user.username }}" min="4"
-            max="10" />
+
+              <form method="POST" class="mx-auto mb-4">
+                {% csrf_token %}
+
+              <div class="input-group mb-2 d-flex flex-column align-items-start">
+                <label for="user_desc" class="mb-1 w-100 text-center">Profile description</label>
+                <textarea class="form-control bg-body-tertiary w-100 rounded" placeholder="Profile description" aria-label="With textarea"
+                  name="user_desc" id="user_desc">{{ user.user_desc }}</textarea>
+              </div>
+              
+              
+            </div>
+          </div>
         </div>
 
-        <!-- Email -->
-        <div class="input-group mb-2 d-flex justify-content-start">
-          <span class="input-group-text">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-envelope"
-              viewBox="0 0 16 16">
-              <path
-                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
-            </svg>
-          </span>
+        <div class="col-8">
+          <div class="row">
+            <div class="col-md-12">
 
-          <input type="email" class="form-control bg-body-tertiary" name="email" value="{{ user.email }}" />
+                <div class="row">
+
+                  <div class="row-auto">
+                    <span class="container rounded text-white" style="background-color: {{ bg_color }}">
+                      {{ user.user_rank }}
+                    </span>
+
+                  </div>
+                  <div class="row">
+
+                  <!-- Title -->
+                  <h1 class="display-5 fst-italic my-4">
+                    {{ user.username }} 
+                  </h1>
+ 
+                  </div>
+                </div>
+
+
+    
+                <!-- Username -->
+                <div class="input-group mb-2 d-flex justify-content-start">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person"
+                      viewBox="0 0 16 16">
+                      <path
+                        d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
+                    </svg>
+                  </span>
+    
+                  <input type="text" class="form-control bg-body-tertiary" name="username" value="{{ user.username }}" min='4' max="10" />
+                </div>
+    
+                <!-- Email -->
+                <div class="input-group mb-2 d-flex justify-content-start">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                      class="bi bi-envelope" viewBox="0 0 16 16">
+                      <path
+                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                    </svg>
+                  </span>
+    
+                  <input type="email" class="form-control bg-body-tertiary" name="email" value="{{ user.email }}" />
+                </div>
+    
+    
+                <!-- Password -->
+                <div class="input-group mb-2 d-flex justify-content-start">
+                  <span class="input-group-text">
+                    Type new password
+                  </span>
+    
+                  <input type="password" class="form-control bg-body-tertiary" name="password1" />
+                </div>
+    
+    
+                <!-- Repeat password -->
+                <div class="input-group mb-2 d-flex justify-content-start">
+                  <span class="input-group-text">
+                    Repeat new password
+                  </span>
+    
+                  <input type="password" class="form-control bg-body-tertiary" name="password2" />
+                </div>
+    
+                <!-- Profile picture upload -->
+                <div class="mb-3">
+                  <label for="formFileSm" class="form-label fs-2">Change profile photo</label>
+                  <input class="form-control form-control-sm bg-body-tertiary" id="formFileSm" name="profile_picture"
+                    type="file" accept=".jpg,.png">
+                </div>
+    
+                <!-- Save button -->
+                <div class="col d-flex justify-content-center align-items-center">
+                  <button type="submit" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#error_modal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-check-lg" viewBox="0 0 16 16">
+                      <path
+                        d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
+                    </svg>
+                    Save
+                  </button>
+                </div>
+    
+    
+              </form>
+    
+              
+            </div>
+          </div>
         </div>
-
-
-        <!-- Password -->
-        <div class="input-group mb-2 d-flex justify-content-start">
-          <span class="input-group-text">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-key"
-              viewBox="0 0 16 16">
-              <path
-                d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z" />
-              <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-            </svg>
-          </span>
-
-          <input type="password" class="form-control bg-body-tertiary" name="password1" disabled />
-        </div>
-
-
-        <!-- Repeat password -->
-        <div class="input-group mb-2 d-flex justify-content-start">
-          <span class="input-group-text">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-key"
-              viewBox="0 0 16 16">
-              <path
-                d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z" />
-              <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-            </svg>
-          </span>
-
-          <input type="password" class="form-control bg-body-tertiary" name="password2" disabled />
-        </div>
-
-        <!-- Profile picture upload -->
-        <div class="mb-3">
-          <label for="formFileSm" class="form-label fs-2">Change profile photo</label>
-          <input class="form-control form-control-sm bg-body-tertiary" id="formFileSm" name="profile_picture"
-            type="file" accept=".jpg,.png">
-        </div>
-
-        <!-- Save button -->
-        <div class="col d-flex justify-content-center align-items-center">
-          <button type="submit" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#error_modal">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg"
-              viewBox="0 0 16 16">
-              <path
-                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z" />
-            </svg>
-            Save
-          </button>
-        </div>
-
-
-      </form>
-
-      {% else %}
-      <!-- Case when user on site isn't owner of profile -->
-
-      <div class="container">
-
-        <p class="display-6">
-          {{ user.username }}
-        </p>
-
-        <p class="display-6">
-          {{ user.email }}
-        </p>
       </div>
-
-
-      {% endif %}
-
+      
     </div>
-  </div>
+    
+    
+    {% else %}
+    <!-- Case when user on site isn't owner of profile -->
 
+    <div class="container">
+
+      <div class="row">
+        <div class="col-4">
+          <div class="row">
+            <div class="col-md-10 mb-4">
+              <div class="profile_image d-flex justify-content-center">
+                <img class="img-fluid rounded-circle" src="{{ user.profile_pic.url }}" >
+              </div>
+            </div>
+            <div class="col-md-12 px-2">
+
+              <div class="input-group mb-2 d-flex flex-column align-items-start">
+                <label for="user_desc" class="mb-1 w-100  display-6">Profile description</label>
+                <p class="fs-5">
+                  {{ user.user_desc }}
+                </p>
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+
+        <div class="col-8">
+          <div class="row">
+            <div class="col-md-12">
+
+                <div class="row">
+
+                  <div class="row-auto">
+                    <span class="container rounded text-white" style="background-color: {{ bg_color }}">
+                      {{ user.user_rank }}
+                    </span>
+
+                  </div>
+                  <div class="row">
+
+                  <!-- Title -->
+                  <h1 class="display-5 fst-italic my-4">
+                    {{ user.username }} 
+                  </h1>
+ 
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="input-group mb-2 d-flex justify-content-start">
+                  <span class="input-group-text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                      class="bi bi-envelope" viewBox="0 0 16 16">
+                      <path
+                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                    </svg>
+                  </span>
+    
+                  <input type="email" class="form-control bg-body-tertiary" name="email" value="{{ user.email }}" disabled/>
+                </div>
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    {% endif %}
+
+
+
+
+  </div>
+<!-- Account picture and info  -->
 
 
   <div class="bg-body-tertiary rounded pb-2">

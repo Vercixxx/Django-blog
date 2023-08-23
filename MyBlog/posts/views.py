@@ -10,7 +10,7 @@ from comments.models import Comment
 from comments.models import Posts_comments
 
 # User
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 # json
 from django.http import JsonResponse
@@ -48,6 +48,8 @@ def get_comments_for_post(post_id):
 # Likes and dislikes handle
 @login_required(login_url='/user/login.html')
 def like_clicked(request):
+    User = get_user_model()
+    
     if request.method == 'POST':
         post_id = request.POST.get('post_id')
         
@@ -112,6 +114,8 @@ def like_clicked(request):
 
 @login_required(login_url='/user/login.html')
 def dislike_clicked(request):
+    User = get_user_model()
+    
     if request.method == 'POST':
         post_id = request.POST.get('post_id')
         

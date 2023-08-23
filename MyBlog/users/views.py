@@ -2,14 +2,15 @@ from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
 from functools import wraps
 from django.http import HttpResponse
+from django.http import JsonResponse
 
 # auth
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import password_validation, update_session_auth_hash
-from django.contrib.auth.models import User
 from .forms import RegisterForm
+from django.core.exceptions import ValidationError
 
 # Captcha
 from .forms import LoginForm
@@ -91,6 +92,7 @@ def account_activation_message(request, user, to_mail):
  
  
 def update_password(request):
+    User = get_user_model()
     
     if request.method == 'POST':
         previous_url = request.POST.get('previous_url')
@@ -179,7 +181,8 @@ def password_recovery_message(request, user, to_mail):
     
 @user_not_authenticated
 def register_view(request):
-
+    User = get_user_model()
+    
     if request.method == 'POST':
         form = RegisterForm(request.POST)
 
@@ -189,17 +192,23 @@ def register_view(request):
             email = request.POST.get('email')
             password = request.POST.get('password1')
             
-            password2 = form.cleaned_data.get('password2')
-            if password != password2:
-                return render(request, 'user/register.html', {'form': form, 'error_message': 'Passwords do not match.'})
+            # Check if email is unique
+            if User.objects.filter(email=email).exists():
+                messages.info(request, 'Email already in use, try another one')
+                return redirect('register_view')
 
-            user = User.objects.create_user(username=username, email=email, password=password)
-            
-            # Setting account state to not active, waiting for email confirmation
-            user.is_active = False
-            user.save()
-            account_activation_message(request, user, email)
-            return redirect('home_view')
+            else:
+                password2 = form.cleaned_data.get('password2')
+                if password != password2:
+                    return render(request, 'user/register.html', {'form': form, 'error_message': 'Passwords do not match.'})
+
+                user = User.objects.create_user(username=username, email=email, password=password)
+                
+                # Setting account state to not active, waiting for email confirmation
+                user.is_active = False
+                user.save()
+                account_activation_message(request, user, email)
+                return redirect('home_view')
         
 
         else:
@@ -216,6 +225,7 @@ def register_view(request):
 
 @user_not_authenticated
 def login_view(request):
+    User = get_user_model()
     lf = LoginForm(request.POST)
     
     output_data = {
@@ -229,10 +239,22 @@ def login_view(request):
             # Logging logic ========================
             username = request.POST["username"]
             password = request.POST["password"]
+
             
+            
+            try:
+                user = User.objects.get(username=username)
+                if not user.is_active:
+                    messages.info(request, "Account you are trying to log in isn't active, check your email box to activte account")
+                    return redirect('login_view')
+                
+                
+            except User.DoesNotExist:
+                messages.info(request, "Wrong username or password")
+                return redirect('login_view')
+                
+
             user = authenticate(request, username=username, password=password)
-            
-            
             if user is not None:
                 login(request, user)
                 return redirect('home_view')
@@ -273,14 +295,19 @@ def logout_user(request):
  
 
 def user_account(request, username):
+    User = get_user_model()
     user = User.objects.get(username=username)
     user_id = user.id
     
     posts = Post.objects.filter(author_id=user_id).order_by('-posted_date')
     
+    # Rank color
+    bg_color = user_rank_color(user)
+    
     data = {
         'user': user,
         'posts': posts, 
+        'bg_color': bg_color,
         'Comments':Comment, 
         'timezone':timezone, 
         'datetime':datetime,
@@ -294,37 +321,57 @@ def user_account(request, username):
         new_email = request.POST.get('email')
         new_password1 = request.POST.get("password1")
         new_password2 = request.POST.get("password2")
+        new_profile_pic = request.POST.get('profile_picture')
+        new_user_desc = request.POST.get('user_desc')
 
         # check if username is unique
         if new_username and new_username != user.username:
             if User.objects.filter(username=new_username).exists():
-                messages.info(request, 'Username already exist!')
-            else:
+                messages.info(request, 'Username already in use, try another one!')
+                return redirect('user_account', username=username)
+            
+            elif 4 <= len(new_username) <= 10:
                 user.username = new_username
                 messages.success(request, 'Username changed!')
-
+                
+            else:
+                messages.success(request, 'Username length must be betwwen 4 and 10 characters')
+                return redirect('user_account', username=username)
+            
+            
         # Setting new email
         if new_email and new_email != user.email:
-            messages.success(request, 'Email changed!')
-            user.email = new_email
+            
+            # Check if email is unique
+            if User.objects.filter(email=new_email).exists():
+                messages.info(request, 'Email already in use, try another one')
+                return redirect('user_account', username=username)
+
+            else:
+                messages.success(request, 'Email changed!')
+                user.email = new_email
 
         # New password logic
         if new_password1:
-            
             if new_password1 == new_password2:
-                validated_pass = is_password_valid(new_password1)
-                
-                if validated_pass:
+                try:
+                    password_validation.validate_password(new_password1, user)
+                except ValidationError as e:
+                    messages.info(request, ', '.join(e))
+                else:
                     user.set_password(new_password1)
                     update_session_auth_hash(request, user)
-                    messages.info(request, 'Password changed sucesfully!' )
-                    
-                else:
-                    output = ''.join(validated_pass)
-                    messages.info(request, output )
-                    
+                    user.save()
+                    messages.info(request, 'Password changed successfully!')
             else:
-                messages.info(request, "Passwords are different" )
+                messages.info(request, "Passwords are different")
+
+        if new_profile_pic:
+            messages.success(request, 'New profile picture set')
+            user.profile_pic = new_profile_pic
+            
+        if new_user_desc is not None and new_user_desc != user.user_desc:
+            user.user_desc = new_user_desc
 
         user.save()
 
@@ -334,9 +381,35 @@ def user_account(request, username):
         return render(request, 'user/user_account.html', data)
     
     
-def is_password_valid(new_password1):
+def is_password_valid(password):
     try:
-        password_validation.validate_password(new_password1)
+        password_validation.validate_password(password)
         return True
-    except password_validation.ValidationError as e:
+    except ValidationError as e:
         return str(e)
+    
+    
+def user_rank_color(user):
+        
+    def rank_colors(rank):
+        colors = {
+            'Newbie': 'grey',
+            'Junior': 'blue',
+            'Member': 'cyan',
+            'SeniorMember': 'green',
+            'Veteran': 'black',
+            'Expert': 'purple',
+            'Guru': 'brown',
+            'Moderator': 'orange',
+            'Administrator': 'red'
+        }
+        
+        
+        default_color = 'lightblue'
+        color = colors.get(rank, default_color)
+        return color
+    
+    bg_color = rank_colors(user.user_rank)
+     
+    return bg_color
+    
