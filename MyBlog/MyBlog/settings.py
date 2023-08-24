@@ -28,8 +28,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = SECRET_KEY_VALUE
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Change before deploy===========================================================
 DEBUG = True
 
+# Change before deploy===========================================================
 ALLOWED_HOSTS = ['127.0.0.1']
 
 
@@ -130,6 +132,19 @@ ESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Auto logging off after 1 hour
 SESSION_COOKIE_AGE = 3600
 
+
+# Change before deploy===========================================================
+# HTTPS settings
+# SESSION_COOKIE_SECURE = True
+# SCRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+
+# Change before deploy===========================================================
+# HSTS settings
+# SECURE_HSTS_SECONDS = 31536000 
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
 # Session
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
@@ -173,6 +188,8 @@ RECAPTCHA_PUBLIC_KEY = '6Le6nIknAAAAADWteU2VQBdLmnyV9vI0gjVYeRQS'
 RECAPTCHA_PRIVATE_KEY = '6Le6nIknAAAAANYOZ4WHvKcU7KfxX4SiKpjObUrK'
 
 RECAPTCHA_REQUIRED_SCORE = 0.85
+
+# Change before deploy===========================================================
 # LOCAL DEVELOPMENT (DELETE IT BEFORE PRODUCTION)\
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
