@@ -4,7 +4,7 @@
 
 {% block head %}
 <meta name="description" content="">
-<title>Forum</title>
+<title>My projects</title>
 {% endblock %}
 
 
@@ -174,10 +174,10 @@
 
     <!-- Site content  -->
 
-    <div class="container bg-teritary vh-100">
+    <div class="container bg-teritary min-vh-100">
         <div class="row text-center d-flex justify-content-center mb-5">
             <div class="display-4">
-                Hi, below you can see my projects 
+                Hi, below you can see a list, of all my projects 
             </div>
         </div>
 
@@ -187,38 +187,107 @@
         <article class="border border-1 rounded fs-5 p-4 bg-body-secondary mb-5">
                 <!-- Title -->
                 <div class="row bg-body-tertiary rounded p-2 mb-2">
-                    <div class="col-1 text-center border-end border-4">
+                    <div class="col-2 text-center border-end border-4">
                         Title
                     </div>
-                    <div class="col-11">
+                    <div class="col-10">
                         {{ project.title }}
                     </div>
                 </div>
                 <!-- Title -->
 
-                <!-- Content -->
+                <!-- Description -->
                 <div class="row bg-body-tertiary rounded p-2 mb-2">
-                    <div class="col-1 text-center border-end border-4">
-                        Content
+                    <div class="col-2 text-center border-end border-4">
+                        Description
                     </div>
-                    <div class="col-11">
-                        {{ project.content }}
+                    <div class="col-10">
+                        {{ project.description }}
                     </div>
                 </div>
-                <!-- Content -->
-
-                <!-- Progress -->
+                <!-- Description -->
+                
+                <!-- Project link -->
                 <div class="row bg-body-tertiary rounded p-2 mb-2">
-                    <div class="col-1 text-center border-end border-4">
+                    <div class="col-2 text-center border-end border-4">
+                        Project link
+                    </div>
+                    <div class="col-10">
+                        <a href="{{ project.project_url }}" class="text-body-secondary d-flex link-offset-2 link-underline link-underline-opacity-0" target="_blank">{{ project.project_url }}</a>
+                    </div>
+                </div>
+                <!-- Project link -->
+                
+                <!-- Techs -->
+                <div class="row bg-body-tertiary rounded p-2 mb-2">
+                    <div class="col-2 text-center border-end border-4">
+                        Technologies
+                    </div>
+                    <div class="col-10">
+                        <div class="row d-flex justify-content-evenly">
+                            {% for technology in project.technologies.all %}
+                            <div class="col-1 text-center ">
+                                <div class="row d-flex justify-content-center mb-2">
+                                    {{ technology.name }}
+                                </div>
+                                <div class="row">
+                                    <img src="{{ technology.image.url }}" class="rounded-5" alt="{{ technology.name }}" >
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Techs -->
+
+                <!-- Commits -->
+                <div class="row bg-body-tertiary rounded p-2 mb-2">
+                    <div class="col-2 text-center border-end border-4">
+                        Commits
+                    </div>
+                    <div class="col-10">
+                        {{ project.commits }}
+                    </div>
+                </div>
+                <!-- Commits -->
+
+                <!-- Branches -->
+                <div class="row bg-body-tertiary rounded p-2 mb-2">
+                    <div class="col-2 text-center border-end border-4">
+                        Branches
+                    </div>
+                    <div class="col-10">
+                        {{ project.branches }}
+                    </div>
+                </div>
+                <!-- Branches -->
+
+                <!-- Last commits -->
+                <div class="row bg-body-tertiary rounded p-2 mb-2">
+                    <div class="col-2 text-center border-end border-4">
+                        Last commit
+                    </div>
+                    <div class="col-10">
+                        {{ project.last_commits }}
+                    </div>
+                </div>
+                <!-- Last commits -->
+
+
+                <!-- Progress bar -->
+                <div class="row bg-body-tertiary rounded p-2 mb-2">
+                    <div class="col-2 text-center border-end border-4">
                         Status
                     </div>
-                    <div class="col-11">
+                    <div class="col-10">
                         <div class="progress" role="progressbar" aria-label="Project progress" aria-valuenow="{{ project.status }}" aria-valuemin="0" aria-valuemax="100" style="height: 100%">
                             <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: {{ project.status }}%">{{ project.status }}%</div>
                         </div>
                     </div>
                 </div>
-                <!-- Progress -->
+                <!-- Progress bar -->
+
+                
         </article>
         {% endfor %}
         <!-- Projects -->
