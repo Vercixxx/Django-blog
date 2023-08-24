@@ -224,14 +224,14 @@
                         Technologies
                     </div>
                     <div class="col-10">
-                        <div class="row">
+                        <div class="row d-flex justify-content-evenly">
                             {% for technology in project.technologies.all %}
-                            <div class="col-1">
-                                <div class="row">
+                            <div class="col-1 text-center ">
+                                <div class="row d-flex justify-content-center mb-2">
                                     {{ technology.name }}
                                 </div>
                                 <div class="row">
-                                    <img src="{{ technology.image.url }}" alt="{{ technology.name }}" width="50" height="50">
+                                    <img src="{{ technology.image.url }}" class="rounded-5" alt="{{ technology.name }}" >
                                 </div>
                             </div>
                             {% endfor %}

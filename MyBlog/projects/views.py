@@ -7,7 +7,8 @@ import requests
 
 def projects_view(request):
    
-    projects = get_projects(request)
+    # projects = get_projects(request)
+    projects = Projects.objects.order_by('-posted_date')
     
     output = {
         'projects' : projects,
@@ -24,11 +25,6 @@ def get_projects(request):
         
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
-        
-        
-        
-        
-        
         
         # Project title and decription
         
